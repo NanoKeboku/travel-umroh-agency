@@ -1,5 +1,9 @@
 # STYLE REFERENCE — Travel Umrah Ebitour Purworejo
 
+> **UPDATE (Agustus 2026):** warna brand project diubah dari hijau olive → **biru langit (sky blue)**
+> atas permintaan klien. Palet `brand` di `src/index.css` kini memakai skala sky Tailwind
+> (#0EA5E9 s/d #082F49). Sand/krem tetap sebagai warna netral pendamping.
+
 > Referensi gaya desain yang diambil dari website **broka.com.my** (screenshot: `asset/referensi/screencapture-broka-my-2026-08-02-12_04_44.png`).
 > Yang ditiru adalah **gaya visual** (warna, font, layout, nuansa), bukan konten/bisnisnya (broka adalah jasa drone — konten kita tetap travel umrah).
 
@@ -209,4 +213,26 @@ h1, h2, h3, h4 { @apply text-brand-900 font-semibold; }
 
 - Screenshot diambil 2026-08-02, resolusi 1920px (desktop). Perlu cek juga tampilan mobile broka untuk pola responsive.
 - Konten website broka (jasa drone, pricing, dashboard) **tidak dipakai** — hanya gaya visualnya.
+- **Palet asli broka (olive) TIDAK dipakai lagi** — diganti biru langit (sky blue) atas permintaan klien. Palet aktif ada di `src/index.css` (`@theme`).
 - Jika ingin, palet bisa disesuaikan sedikit agar lebih "islami" (misal tambah aksen emas `#C9A96E` untuk detail premium) — rekomendasi opsional.
+
+## 9. Referensi Website Resmi Ebitour (www.ebitour.com)
+
+> Dicatat dari website resmi klien: https://www.ebitour.com/en (dibangun dengan Odoo).
+
+**Palet resmi Ebitour (ungu + emas):**
+
+| Warna | Hex | Penggunaan |
+|---|---|---|
+| Ungu sangat gelap (plum) | `#1A1423` | Teks utama, dark section |
+| Ungu | `#714B67`, `#875A7B` | Aksen ungu |
+| Emas (utama) | `#FAB803`, `#FBBF1C` | CTA, aksen, highlight |
+| Krem background | `#F5F4F0` | Background |
+| Teal | `#017E84` | Aksen sekunder |
+
+**Identitas resmi:**
+- Nama: EBITOUR Tours & Travels — penyelenggara Ibadah Umroh
+- Pedoman: **"Setia & Amanah, melayani dengan sepenuh hati para Tamu Allah SWT"**
+- Konten: paket umroh/haji, maskapai, Kemenag
+
+**Keputusan desain project kita:** website resmi klien berpalet ungu+emas, tetapi klien meminta warna brand project **biru langit** (sky blue). Palet ungu+emas di atas tetap dicatat sebagai identitas resmi perusahaan untuk referensi (misal untuk logo, brosur, atau penyesuaian di masa depan).

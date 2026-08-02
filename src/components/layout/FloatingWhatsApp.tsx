@@ -18,11 +18,11 @@ function FloatingWhatsApp() {
       transition={{ delay: 1, type: 'spring', stiffness: 260, damping: 18 }}
       whileHover={{ scale: 1.12 }}
       whileTap={{ scale: 0.95 }}
-      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-green-500 text-white shadow-xl shadow-green-500/30"
+      className="fixed bottom-6 right-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-sky-500 text-white shadow-xl shadow-sky-500/30"
     >
       <Icon name="whatsapp" className="h-7 w-7" />
       {/* Pulsa halus */}
-      <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-green-500/60" />
+      <span className="absolute inset-0 -z-10 animate-ping rounded-full bg-sky-500/60" />
     </motion.a>
   )
 }
