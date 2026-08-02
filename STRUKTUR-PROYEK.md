@@ -109,9 +109,12 @@ npm run lint       # cek TypeScript
 
 ## Tahap Berikutnya (belum dikerjakan)
 
-- [ ] Setup routing (React Router) di `App.tsx`
-- [ ] Implementasi komponen layout (Navbar, Footer, FloatingWhatsApp)
-- [ ] Implementasi halaman per halaman
-- [ ] Data statis (paket, testimoni, artikel, FAQ)
+- [x] Setup routing (React Router) di `App.tsx` — 15 route terpasang
+- [x] Kerangka komponen layout (Navbar, Footer, FloatingWhatsApp, Layout, useScrollToTop)
+- [x] Kerangka komponen UI (Button, Card, Badge, SectionHeading)
+- [x] Kerangka halaman per halaman (semua file dibuat sebagai stub)
+- [x] Kerangka data statis (paket, testimoni, artikel, FAQ, kontak, galeri)
+- [ ] Isi konten halaman (full implementasi sesuai STYLE-REFERENCE.md)
+- [ ] Isi data statis dengan konten asli Ebitour
 - [ ] Optimasi SEO lanjutan & metadata per halaman
 - [ ] Deploy ke Cloudflare Pages
