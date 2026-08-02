@@ -153,19 +153,117 @@ export default Home               // biar bisa di-import App.tsx
 - Atribut `style`/event diberi nama camelCase: `onClick`, `onSubmit`.
 
 ### c. Props — data masuk ke komponen
-Lihat `src/components/ui/Button.tsx`:
+
+**Props = "parameter fungsi" untuk komponen.** Komponen adalah fungsi; props adalah argumennya. Bedanya, props dikirim lewat JSX (mirip atribut HTML). Karena komponen ditulis sekali tapi dipakai banyak tempat dengan data berbeda → itulah **reusability**.
+
+Mari bedah `src/components/ui/Button.tsx` baris per baris — ini komponen paling padat pelajaran di project ini:
+
+```tsx
+import type { ButtonHTMLAttributes, ReactNode } from 'react'
+```
+
+- `import type` → hanya mengimpor *tipe* (tidak ada kode yang dijalankan; TypeScript membuangnya saat build).
+- `ButtonHTMLAttributes` → tipe berisi SEMUA atribut yang boleh dimiliki elemen `<button>` di HTML: `onClick`, `disabled`, `type`, `title`, `aria-*`, dst.
+- `ReactNode` → tipe "apa pun yang bisa dirender React": teks, elemen, komponen lain, bahkan array/null.
+
 ```tsx
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode
 }
-function Button({ children, className = '', ...rest }: ButtonProps) { ... }
 ```
-Komponen `Button` menerima props (seperti atribut HTML), lalu dipakai berulang:
+
+- `interface` = kontrak bentuk props.
+- `extends ButtonHTMLAttributes<HTMLButtonElement>` = "saya mewarisi semua atribut button HTML". Jadi komponen kita otomatis bisa menerima `onClick`, `disabled`, `type`, dll. — tanpa menuliskannya satu per satu.
+- `children: ReactNode` = tambahan satu props khusus: isi di antara tag `<Button>...</Button>`.
+
 ```tsx
-<Button>Daftar Sekarang</Button>
-<Button className="bg-teal-brand">Chat WhatsApp</Button>
+function Button({ children, className = '', ...rest }: ButtonProps) {
 ```
-Inilah **reusability** — tulis sekali, pakai banyak tempat.
+
+- **Destructuring** `{ children, className, ...rest }` — membongkar objek props menjadi variabel terpisah.
+- `className = ''` — nilai default: kalau pemakai tidak mengirim `className`, dianggap string kosong (tidak error).
+- `...rest` — **rest operator**: menampung SEMUA props lain yang tidak kita bongkar (`onClick`, `disabled`, `type`, dst.) ke satu objek.
+
+```tsx
+return (
+  <button
+    className={`rounded-lg ... hover:bg-brand-700 ${className}`}
+    {...rest}
+  >
+    {children}
+  </button>
+)
+```
+
+- `{...rest}` — **spread operator**: melempar semua props sisa ke elemen `<button>` asli. Inilah jembatannya: pemakai menulis `<Button onClick={...}>`, onClick-nya sampai ke button HTML.
+- `${className}` di akhir — class tambahan dari pemakai digabung dengan class bawaan (template literal).
+- `{children}` — menampilkan isi tombol.
+
+Jadi satu fungsi kecil ini menerima **3 "saluran" props sekaligus**:
+1. `children` → isi tombol
+2. `className` → gaya tambahan
+3. `...rest` → semua atribut button HTML (diwariskan)
+
+**Penerapan nyata (bayangkan saat halaman diisi nanti):**
+
+```tsx
+{/* children + type + onClick — onClick otomatis valid karena extends */}
+<Button type="submit" onClick={() => kirimForm()}>Kirim Pendaftaran</Button>
+
+{/* disabled — juga otomatis valid, tanpa ditulis di interface */}
+<Button disabled>Mengirim...</Button>
+
+{/* className untuk variasi lebar/layout */}
+<Button className="w-full md:w-auto">Chat Admin via WhatsApp</Button>
+
+{/* props yang TIDAK dikirim → pakai default className='', aman */}
+<Button>Daftar Sekarang</Button>
+```
+
+Perhatikan: kita TIDAK perlu menulis `onClick`/`disabled` di dalam interface — sudah diwarisi dari `ButtonHTMLAttributes`. Itulah kekuatan `extends`.
+
+**Latihan penerapan paling umum: bikin variasi (variant) — pola yang akan kita pakai nanti:**
+
+```tsx
+interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  children: ReactNode
+  variant?: 'primary' | 'outline'   // props baru milik kita sendiri
+}
+
+function Button({ children, className = '', variant = 'primary', ...rest }: ButtonProps) {
+  const base = 'rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors'
+  const styles = {
+    primary: 'bg-brand-600 text-white hover:bg-brand-700',
+    outline: 'border-2 border-brand-600 text-brand-600 hover:bg-brand-50',
+  }
+  return (
+    <button className={`${base} ${styles[variant]} ${className}`} {...rest}>
+      {children}
+    </button>
+  )
+}
+```
+
+Pemakaiannya jadi ekspresif (mudah dibaca tujuannya):
+```tsx
+<Button variant="primary" onClick={...}>Daftar Sekarang</Button>
+<Button variant="outline">Lihat Paket</Button>
+```
+
+**Pola yang sama di komponen lain** (`src/components/ui/`):
+
+- `Card` — `extends HTMLAttributes<HTMLDivElement>`: menerima `children` + `className` (wadah).
+- `Badge` — `extends HTMLAttributes<HTMLSpanElement>`: menerima `children` (label).
+- `SectionHeading` — props khusus sendiri: `eyebrow`, `title`, `description` → data masuk, tampilan beda:
+  ```tsx
+  <SectionHeading eyebrow="Paket Kami" title="Pilihan Paket Umrah" description="Harga transparan..." />
+  ```
+
+**Aturan emas props (hafalkan):**
+1. Props = read-only. Komponen TIDAK boleh mengubah props — kalau data perlu berubah, pakai state (bukan props).
+2. Satu arah: data mengalir dari induk → anak (parent → child). Tidak pernah sebaliknya.
+3. Butuh nilai default? Pakai `= nilai` di destructuring (`className = ''`).
+4. Jangan tulis ulang atribut HTML yang sudah ada — warisi lewat `extends`.
 
 ### d. State & Hooks — data yang berubah
 - `useState` — menyimpan data yang berubah (misal: buka/tutup menu mobile, isi form).
@@ -332,7 +430,7 @@ Setiap selesai satu tahap → `git add -A && git commit && git push` (sesuai kes
 5. **Baca error** — TypeScript & Vite memberi pesan error yang jelas. Error bukan musuh; itu petunjuk.
 6. Kalau buntu, tanya — jelaskan apa yang dicoba, apa yang terjadi, dan apa error-nya.
 
----
+---------------------------------------------------------------
 
 ## 11. Laravel vs React — Peta Padanan Lengkap
 
