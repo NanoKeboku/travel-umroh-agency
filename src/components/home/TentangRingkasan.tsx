@@ -97,8 +97,8 @@ function TentangRingkasan() {
                 </div>
               </div>
             </div>
-            {/* Kartu melayang */}
-            <div className="absolute -bottom-6 -left-4 rounded-xl bg-white p-4 shadow-lg ring-1 ring-gray-100 sm:-left-6">
+            {/* Kartu melayang — di dalam panel di mobile, melayang keluar di sm+ */}
+            <div className="absolute -bottom-5 left-3 rounded-xl bg-white p-3 shadow-lg ring-1 ring-gray-100 sm:-left-6 sm:bottom-6 sm:p-4">
               <div className="flex items-center gap-3">
                 <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-100 text-brand-600">
                   <Icon name="users" className="h-5 w-5" />

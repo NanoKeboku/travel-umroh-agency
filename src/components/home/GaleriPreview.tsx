@@ -1,6 +1,6 @@
 /**
- * Galeri Preview — cuplikan dokumentasi keberangkatan (social proof)
- * Data dari src/data/galeri.ts — placeholder, ganti dengan foto asli.
+ * GaleriPreview — cuplikan dokumentasi keberangkatan (social proof)
+ * Grid: 2 kolom mobile → 4 desktop. Gambar sementara dari Wikimedia Commons.
  */
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
@@ -14,7 +14,7 @@ function GaleriPreview() {
   const foto = GALERI.filter((g) => g.tipe === 'foto').slice(0, 4)
 
   return (
-    <section className="bg-brand-900 py-20 sm:py-24">
+    <section className="bg-brand-900 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
@@ -30,29 +30,36 @@ function GaleriPreview() {
           />
         </motion.div>
 
+        {/* Grid: 2 kolom mobile, 4 desktop */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-10 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-5 lg:grid-cols-4"
         >
           {foto.map((g) => (
             <motion.div
               key={g.id}
               variants={fadeIn}
-              className="group relative overflow-hidden rounded-2xl shadow-lg"
+              className="group relative overflow-hidden rounded-xl shadow-lg sm:rounded-2xl"
             >
-              {/* Placeholder visual — ganti dengan <img src={g.url}> */}
-              <div className="flex aspect-[3/4] items-center justify-center bg-gradient-to-br from-brand-600 to-brand-800">
-                <Icon name="kaaba" className="h-12 w-12 text-sand-200/70" />
+              <div className="aspect-[3/4]">
+                <img
+                  src={g.url}
+                  alt={g.judul}
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
               {/* Overlay */}
-              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/10 to-transparent p-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-                <span className="rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-white backdrop-blur">
+              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/10 to-transparent p-2.5 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
+                <span className="w-fit rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white backdrop-blur sm:text-[10px]">
                   {g.kategori}
                 </span>
-                <p className="mt-2 text-sm font-semibold text-white">{g.judul}</p>
+                <p className="mt-1.5 line-clamp-2 text-xs font-semibold text-white sm:text-sm">
+                  {g.judul}
+                </p>
               </div>
             </motion.div>
           ))}
@@ -63,7 +70,7 @@ function GaleriPreview() {
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="mt-10 text-center"
+          className="mt-8 text-center sm:mt-10"
         >
           <Link
             to="/galeri"

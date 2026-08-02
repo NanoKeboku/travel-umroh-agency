@@ -1,6 +1,7 @@
 /**
  * Data paket umrah & haji
- * CATATAN: data di bawah ini PLACEHOLDER (contoh) — ganti dengan data asli Ebitour.
+ * CATATAN: data PLACEHOLDER — ganti dengan data asli Ebitour.
+ * Gambar sementara pakai link Wikimedia Commons (ganti dengan foto asli nanti).
  */
 export interface Paket {
   id: string
@@ -13,6 +14,7 @@ export interface Paket {
   hotel: string // contoh: "Makkah: Hilton • Madinah: Anwar"
   fasilitas: string[]
   persyaratan: string[]
+  gambar: string // URL / path gambar utama kartu
 }
 
 export const PAKET_UMRAH: Paket[] = [
@@ -39,6 +41,8 @@ export const PAKET_UMRAH: Paket[] = [
       'Kartu kuning vaksin meningitis',
       'Saldo bukti 3000 SAR',
     ],
+    gambar:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Kaaba%2C_Makkah3.jpg/960px-Kaaba%2C_Makkah3.jpg',
   },
   {
     id: 'umrah-reguler',
@@ -64,6 +68,8 @@ export const PAKET_UMRAH: Paket[] = [
       'Kartu kuning vaksin meningitis',
       'Saldo bukti 3000 SAR',
     ],
+    gambar:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Supplicating_Pilgrim_at_Masjid_Al_Haram._Mecca%2C_Saudi_Arabia.jpg/960px-Supplicating_Pilgrim_at_Masjid_Al_Haram._Mecca%2C_Saudi_Arabia.jpg',
   },
   {
     id: 'umrah-premium',
@@ -89,6 +95,8 @@ export const PAKET_UMRAH: Paket[] = [
       'Kartu kuning vaksin meningitis',
       'Saldo bukti 3000 SAR',
     ],
+    gambar:
+      'https://upload.wikimedia.org/wikipedia/commons/1/10/Kaaba_at_night.jpg',
   },
 ]
 
@@ -114,6 +122,8 @@ export const PAKET_HAJI: Paket[] = [
       'Kartu kuning vaksin meningitis',
       'Kesehatan jasmani & rohani',
     ],
+    gambar:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/The_Kaaba_during_Hajj_-_edited.jpg/960px-The_Kaaba_during_Hajj_-_edited.jpg',
   },
   {
     id: 'haji-plus',
@@ -136,5 +146,7 @@ export const PAKET_HAJI: Paket[] = [
       'Kartu kuning vaksin meningitis',
       'Kesehatan jasmani & rohani',
     ],
+    gambar:
+      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Al-Masjid_an_Nabawi.jpg/960px-Al-Masjid_an_Nabawi.jpg',
   },
 ]
