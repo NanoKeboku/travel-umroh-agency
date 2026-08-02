@@ -26,8 +26,6 @@ function Hero() {
           loading="eager"
         />
         {/* Overlay gradasi: gelap di kiri (teks), transparan di kanan (kartu) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-950/95 via-brand-900/80 to-brand-900/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-brand-950 via-transparent to-brand-900/60" />
 
       </div>
 
@@ -54,7 +52,7 @@ function Hero() {
             className="mt-6 text-4xl font-extrabold leading-tight text-white sm:text-5xl lg:text-6xl"
           >
             Wujudkan Panggilan Suci,
-            <span className="block text-sky-300">Ibadah dengan Hati Tenang</span>
+            Ibadah dengan Hati Tenang
           </motion.h1>
 
           {/* Deskripsi */}

@@ -17,6 +17,7 @@ function TentangRingkasan() {
           whileInView="show"
           viewport={viewportOnce}
         >
+
           <SectionHeading
             eyebrow="Tentang Kami"
             title="Perjalanan Ibadah yang Terpercaya & Berpengalaman"
