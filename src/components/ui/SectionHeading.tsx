@@ -1,14 +1,23 @@
 /**
  * SectionHeading — judul section konsisten (eyebrow + title + deskripsi)
- * Status: KERANGKA — siap diisi (alignment, variant, dll.)
+ * Props:
+ *  - eyebrow, title, description : teks
+ *  - variant="light" | "dark"    : untuk latar terang / gelap
  */
 interface SectionHeadingProps {
   eyebrow?: string
   title: string
   description?: string
+  variant?: 'light' | 'dark'
 }
 
-function SectionHeading({ eyebrow, title, description }: SectionHeadingProps) {
+function SectionHeading({
+  eyebrow,
+  title,
+  description,
+  variant = 'light',
+}: SectionHeadingProps) {
+  const dark = variant === 'dark'
   return (
     <div className="mx-auto max-w-2xl text-center">
       {eyebrow && (
@@ -16,9 +25,17 @@ function SectionHeading({ eyebrow, title, description }: SectionHeadingProps) {
           {eyebrow}
         </p>
       )}
-      <h2 className="mt-2 text-3xl font-bold text-brand-900">{title}</h2>
+      <h2
+        className={`mt-2 text-3xl font-bold ${
+          dark ? 'text-white' : 'text-brand-900'
+        }`}
+      >
+        {title}
+      </h2>
       {description && (
-        <p className="mt-3 text-gray-500">{description}</p>
+        <p className={`mt-3 ${dark ? 'text-white/70' : 'text-gray-500'}`}>
+          {description}
+        </p>
       )}
     </div>
   )

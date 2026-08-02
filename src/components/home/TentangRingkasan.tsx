@@ -1,0 +1,119 @@
+/**
+ * Tentang (Ringkasan) — preview profil perusahaan di Beranda
+ * Gaya: dua kolom — teks kiri, panel visual kanan (placeholder gambar)
+ */
+import { motion } from 'framer-motion'
+import Icon from '../ui/Icon'
+import SectionHeading from '../ui/SectionHeading'
+import { staggerContainer, fadeUp, fadeIn, viewportOnce } from './anim'
+
+function TentangRingkasan() {
+  return (
+    <section className="bg-white py-20 sm:py-24">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewportOnce}
+        >
+          <SectionHeading
+            eyebrow="Tentang Kami"
+            title="Perjalanan Ibadah yang Terpercaya & Berpengalaman"
+            description="Ebitour hadir sebagai mitra perjalanan ibadah yang mengutamakan kenyamanan, keamanan, dan kekhusyukan jamaah."
+          />
+        </motion.div>
+
+        <div className="mt-14 grid items-center gap-12 lg:grid-cols-2">
+          {/* Teks */}
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
+            className="space-y-5"
+          >
+            <motion.p variants={fadeUp} className="text-lg leading-relaxed text-gray-600">
+              Travel Umrah Ebitour Purworejo adalah penyedia layanan perjalanan
+              ibadah umrah dan haji yang telah mendampingi ribuan jamaah dari
+              Purworejo dan sekitarnya.
+            </motion.p>
+            <motion.p variants={fadeUp} className="leading-relaxed text-gray-500">
+              Kami berkomitmen menghadirkan pengalaman ibadah yang tenang dan
+              bermakna — didukung pembimbing berpengalaman, hotel strategis,
+              transportasi nyaman, serta pendampingan penuh sejak manasik
+              hingga kepulangan.
+            </motion.p>
+
+            {/* Poin keunggulan singkat */}
+            <motion.ul variants={fadeUp} className="space-y-3 pt-2">
+              {[
+                'Legal & resmi — dokumen dan visa diurus tuntas',
+                'Pembimbing & muthawif berpengalaman',
+                'Fasilitas hotel sesuai perjanjian, harga transparan',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-100 text-brand-600">
+                    <Icon name="check" className="h-4 w-4" />
+                  </span>
+                  <span className="text-gray-600">{item}</span>
+                </li>
+              ))}
+            </motion.ul>
+
+            <motion.div variants={fadeUp} className="pt-2">
+              <a
+                href="/tentang"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
+              >
+                Selengkapnya tentang kami
+                <Icon name="arrowRight" className="h-4 w-4" />
+              </a>
+            </motion.div>
+          </motion.div>
+
+          {/* Panel visual (placeholder) */}
+          <motion.div
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
+            className="relative"
+          >
+            <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 shadow-xl">
+              <div
+                aria-hidden="true"
+                className="flex aspect-[4/3] items-center justify-center"
+              >
+                {/* Placeholder: ganti dengan foto asli (src/assets/images) */}
+                <div className="text-center">
+                  <Icon name="kaaba" className="mx-auto h-20 w-20 text-sand-200" />
+                  <p className="mt-4 text-sm font-medium text-white/70">
+                    Foto Perusahaan
+                  </p>
+                  <p className="mt-1 text-xs text-white/40">
+                    ganti dengan gambar asli di src/assets/images/
+                  </p>
+                </div>
+              </div>
+            </div>
+            {/* Kartu melayang */}
+            <div className="absolute -bottom-6 -left-4 rounded-xl bg-white p-4 shadow-lg ring-1 ring-gray-100 sm:-left-6">
+              <div className="flex items-center gap-3">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-100 text-brand-600">
+                  <Icon name="users" className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-xl font-extrabold text-brand-900">2.500+</p>
+                  <p className="text-xs text-gray-500">Jamaah Terlayani</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default TentangRingkasan
