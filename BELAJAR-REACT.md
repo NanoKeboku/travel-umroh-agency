@@ -334,6 +334,302 @@ Setiap selesai satu tahap → `git add -A && git commit && git push` (sesuai kes
 
 ---
 
+## 11. Laravel vs React — Peta Padanan Lengkap
+
+> Bagian ini untuk yang sudah kenal Laravel. Inti yang harus selalu diingat:
+> **Laravel = server-side** (PHP jalan di server, kirim HTML jadi),
+> **React = client-side** (JS jalan di browser, bangun HTML).
+> Semua padanan di bawah harus dibaca dengan kerangka itu.
+
+### 11.1 Tabel Padanan Cepat
+
+| Laravel | React (project ini) |
+|---|---|
+| `routes/web.php` | `src/App.tsx` (peta route) |
+| Controller | `src/pages/*.tsx` (satu file per halaman) |
+| Blade view | JSX di komponen |
+| Model (Eloquent) | TypeScript `interface` (definisi bentuk data) |
+| Migration | `interface`/`type` di file data |
+| Seeder (`db:seed`) | `src/data/*.ts` (data awal/statis) |
+| Eloquent query (ambil data) | import data langsung / `.filter()` (fase ERP: `fetch` API) |
+| Middleware group | `<Route element={<Layout />}>` (pembungkus) |
+| Blade `@include`/`@extends` | komponen + props + `children` |
+| `public/` folder | `public/` folder (file statis) |
+| Aset via Vite (Laravel 9+) | `src/assets/` + `import` (otomatis hash) |
+| `.env` + `env('KEY')` | `.env` + `import.meta.env.VITE_*` |
+| Artisan command | npm scripts (`dev`/`build`/`lint`) |
+| `Route::get('/paket/{id}')` | `path="/paket/:id"` + `useParams()` |
+| Validasi (FormRequest) | controlled input + validasi client-side (nanti: zod) |
+| Auth/session | fase 1: tidak ada; fase ERP: token |
+| 404 (`fallback`) | `<Route path="*" element={<NotFound />} />` |
+| Pagination | `.slice()` manual (fase 1) |
+
+### 11.2 Routing — `web.php` vs `App.tsx`
+
+```php
+// LARAVEL — routes/web.php
+Route::middleware('web')->group(function () {
+    Route::get('/',            HomeController::class);
+    Route::get('/paket-umrah', PaketUmrahController::class);
+    Route::fallback(NotFoundController::class);
+});
+```
+
+```tsx
+// REACT — src/App.tsx
+<Route element={<Layout />}>              // ← "middleware group"-nya
+  <Route path="/" element={<Home />} />
+  <Route path="/paket-umrah" element={<PaketUmrah />} />
+  <Route path="*" element={<NotFound />} />
+</Route>
+```
+
+Struktur nyaris identik. Bedanya: Laravel **server** yang mencocokkan URL → memanggil controller → render Blade → kirim HTML. React **browser** yang mencocokkan URL (lewat komponen `<Routes>`) → langsung render komponen — tanpa request baru ke server.
+
+### 11.3 Controller → Halaman (`src/pages/`)
+
+```php
+// LARAVEL
+class PaketController extends Controller {
+    public function index() {
+        $pakets = Paket::where('jenis', 'umrah')->get();
+        return view('paket.index', ['pakets' => $pakets]);
+    }
+}
+```
+
+```tsx
+// REACT — src/pages/PaketUmrah.tsx
+function PaketUmrah() {
+  // tidak ada $pakets dari controller — data datang dari import (lihat 11.6)
+  return <section>...</section>
+}
+```
+
+Di React, "controller" dan "view" **melebur jadi satu komponen**. Kenapa? Karena tidak ada siklus request → response. Komponen hanya menerima data (via import/props) lalu menampilkannya.
+
+### 11.4 Model → TypeScript Interface
+
+```php
+// LARAVEL — app/Models/Paket.php
+class Paket extends Model {
+    protected $fillable = ['nama', 'harga', 'durasi'];
+    public function fasilitas() { return $this->hasMany(Fasilitas::class); }
+}
+```
+
+```ts
+// REACT — src/data/paket.ts
+export interface Paket {
+  id: string
+  jenis: 'umrah' | 'haji'
+  nama: string
+  harga: number
+  fasilitas: string[]   // "relasi" sederhana: array
+}
+```
+
+Model Laravel = struktur + query DB. Interface TypeScript = **definisi bentuk data** (kontrak). Gunanya: kalau kamu salah tulis field, TypeScript langsung protes saat `npm run lint` — error ketahuan sebelum dijalankan, bukan saat runtime. "Relasi" `hasMany` di fase statis cukup diwakili array (`fasilitas: string[]`).
+
+### 11.5 Seeder → `src/data/*.ts`
+
+```php
+// LARAVEL — DatabaseSeeder.php
+Paket::create(['nama' => 'Umrah Hemat', 'harga' => 35000000]);
+```
+
+```ts
+// REACT — src/data/paket.ts
+export const PAKET_UMRAH: Paket[] = [
+  { id: 'umrah-1', nama: 'Umrah Hemat', harga: 35000000, ... },
+]
+```
+
+Fase 1 tanpa database → "seeder"-nya ya file data statis ini. Saat fase ERP nanti, file ini tidak dihapus — halaman tinggal ganti sumber data dari import menjadi `fetch('/api/paket')`.
+
+### 11.6 Ambil Data — Eloquent vs Import vs Fetch
+
+```php
+// LARAVEL — ambil dari DB
+$pakets = Paket::where('jenis', 'umrah')->where('harga', '<', 50000000)->get();
+```
+
+```tsx
+// REACT — FASE 1 (statis): import langsung, filter pakai JS
+import { PAKET_UMRAH } from '../data/paket'
+
+const murah = PAKET_UMRAH.filter(p => p.harga < 50000000)
+```
+
+```tsx
+// REACT — FASE ERP (nanti): ambil dari API
+const res = await fetch('/api/paket')
+const pakets = await res.json()
+```
+
+Pola render-nya tetap sama: `.map()`:
+
+```tsx
+<div className="grid gap-6 md:grid-cols-3">
+  {PAKET_UMRAH.map(paket => (
+    <PaketCard key={paket.id} paket={paket} />
+  ))}
+</div>
+```
+
+### 11.7 Middleware → Layout & Route Guard
+
+```php
+// LARAVEL — middleware group: semua route di dalamnya kena cek auth dulu
+Route::middleware(['auth'])->group(function () { ... });
+```
+
+```tsx
+// REACT — layout route: semua halaman otomatis dapat Navbar + Footer
+<Route element={<Layout />}>       {/* Layout punya <Outlet/> */}
+  <Route path="/" element={<Home />} />
+</Route>
+```
+
+Fase 1 tidak ada auth. Nanti fase ERP (admin panel), pola "guard"-nya jadi komponen pembungkus: `<ProtectedRoute>` yang cek token — kalau belum login, redirect ke halaman login. Sama konsepnya dengan middleware `auth`.
+
+### 11.8 Blade → JSX
+
+```blade
+{{-- LARAVEL --}}
+@extends('layout')
+@section('content')
+  @include('navbar')
+  @if ($pakets->count() > 0)
+    @foreach ($pakets as $paket)
+      <p>{{ $paket->nama }}</p>
+    @endforeach
+  @endif
+@endsection
+```
+
+```tsx
+// REACT — komponen + JSX
+<div>
+  <Navbar />
+  {PAKET_UMRAH.length > 0 && (
+    PAKET_UMRAH.map(paket => <p key={paket.id}>{paket.nama}</p>)
+  )}
+</div>
+```
+
+| Blade | JSX |
+|---|---|
+| `@include('navbar')` | `<Navbar />` |
+| `@extends('layout')` | `<Route element={<Layout />}>` + `<Outlet/>` |
+| `@if (a) @endif` | `{a && ...}` |
+| `@foreach ($x as $y)` | `{x.map(y => ...)}` |
+| `{{ $var }}` | `{var}` |
+| `@auth` / `@guest` | (fase ERP: `{isLogin ? ... : ...}`) |
+
+Catatan: Blade pakai simbol `@`, JSX pakai kurung kurawal `{ }`. Dan di JSX, list wajib diberi `key` unik (di sini `key={paket.id}`) — itu cara React melacak tiap item.
+
+### 11.9 Asset & Public Folder
+
+**Laravel:** semua file di `public/` bisa diakses langsung via URL (`/img/logo.png`), plus aset versi Vite di `public/build/`.
+
+**React (Vite): ada 2 cara, dan bedanya penting:**
+
+```tsx
+// 1) public/ — file ditaruh mentah, diakses via path root
+//    public/brosur/brosur.pdf → <a href="/brosur/brosur.pdf">Download</a>
+//    public/images/galeri/1.jpg → <img src="/images/galeri/1.jpg" />
+
+// 2) src/assets/ — file di-import, diproses bundler
+import logo from './assets/images/logo.svg'
+<img src={logo} />
+```
+
+| | `public/` | `src/assets/` |
+|---|---|---|
+| Cara | taruh file, panggil `/nama` | `import` ke kode |
+| Diproses bundler? | Tidak (mentah) | Ya (dikompres, di-hash) |
+| Cache busting | Tidak | Ya (`logo-abc123.svg`) |
+| Cocok untuk | brosur PDF, gambar galeri, favicon | logo, ikon yang dipakai komponen |
+
+CSS juga lewat bundler: `src/index.css` (Tailwind) → hasil akhir `dist/assets/index-xxx.css` — persis seperti `build/assets/app-xxx.css` di Laravel.
+
+### 11.10 `.env` → `import.meta.env`
+
+```php
+// LARAVEL
+$wa = env('WA_PHONE');          // dibaca di server, aman
+```
+
+```ts
+// REACT — wajib prefix VITE_ agar terekspos ke client
+// .env  →  VITE_WA_PHONE=6281234567890
+const wa = import.meta.env.VITE_WA_PHONE
+```
+
+**PENTING:** semua kode JS React dikirim ke browser. Jadi **jangan pernah taruh rahasia** (DB password, API key server) di `.env` Vite — hanya untuk hal yang memang boleh dilihat publik (nomor WA, URL, kunci Google Maps). Fase 1 kita bahkan tidak butuh `.env` — cukup `src/data/kontak.ts`.
+
+### 11.11 Artisan → npm scripts
+
+| Laravel | React |
+|---|---|
+| `php artisan serve` | `npm run dev` |
+| `composer install` | `npm install` |
+| `php artisan migrate` | (tidak ada — ganti: ubah `interface`/type) |
+| `php artisan db:seed` | (tidak ada — ganti: isi `src/data/*.ts`) |
+| `php artisan route:list` | lihat `App.tsx` (peta route) |
+| `php artisan view:cache` | `npm run build` |
+| `php artisan config:cache` | — |
+
+### 11.12 Route Param — `/paket/{id}` vs `/paket/:id`
+
+```php
+// LARAVEL
+Route::get('/paket/{id}', [PaketController::class, 'show']);
+// $id = request route
+```
+
+```tsx
+// REACT — nanti saat bikin halaman detail paket
+<Route path="/paket/:id" element={<DetailPaket />} />
+
+// di komponen:
+import { useParams } from 'react-router-dom'
+function DetailPaket() {
+  const { id } = useParams()   // ambil dari URL, mirip route param Laravel
+  return <p>Paket ID: {id}</p>
+}
+```
+
+### 11.13 Yang TIDAK Ada Padanannya (penting!)
+
+1. **SEO per halaman** — SPA render di browser, jadi meta `title`/`description` per halaman perlu library tambahan (mis. react-helmet-async) atau pendekatan prerender. Masuk roadmap kita.
+2. **CSRF token** — tidak ada form server-side; nanti API pakai token sendiri (JWT/Bearer).
+3. **Session server** — tidak ada; auth fase ERP via token di `localStorage`.
+4. **Keamanan di server** — semua logika jalan di browser pengguna, jadi "sumber kebenaran" & validasi final harus tetap di API/server nanti.
+
+### 11.14 Satu Alur Data Lengkap (contoh nyata: tampilkan paket umrah)
+
+```
+LARAVEL:
+1. Request /paket-umrah        → web.php → PaketController@index
+2. $pakets = Paket::where('jenis','umrah')->get()   ← ambil dari DB
+3. return view('paket.index', ['pakets' => $pakets])
+4. Blade @foreach → HTML jadi → kirim ke browser
+
+REACT (fase 1):
+1. Browser load app → App.tsx lihat URL /paket-umrah → render <PaketUmrah/>
+2. import { PAKET_UMRAH } from '../data/paket'        ← "seeder"
+3. PAKET_UMRAH.filter(...) kalau perlu filter
+4. PAKET_UMRAH.map(paket => <PaketCard/>) → JSX dirender di browser
+
+REACT (fase ERP — nanti):
+2'. const res = await fetch('/api/paket'); const pakets = await res.json()
+    ← ganti import dengan request API, sisanya sama persis
+```
+
+Itulah kenapa arsitektur fase 1 ini bagus: **saat upgrade ke ERP, halaman tidak perlu ditulis ulang** — cukup ganti sumber data (import → fetch), karena tampilan (JSX) dan data sudah terpisah sejak awal.
+
 ## Referensi Resmi
 
 - React: https://react.dev/learn
