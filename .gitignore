@@ -31,3 +31,6 @@ Thumbs.db
 .wrangler/
 .dev.vars
 PANDUAN-FONTTE.md
+
+# Installer asing
+*.exe
