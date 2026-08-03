@@ -1,6 +1,6 @@
 /**
  * PesanPaketForm — form pemesanan paket umroh
- * Blueprint: form "Pesan Paket" (referensi Nur Ramadhan) — FITUR-PENCARIAN-TIKET.md 3c
+ * Blueprint: form "Pesan Paket" (referensi Nur Ramadhan) — DOKUMEN-INTERNAL 3c
  * Fase 1: pilihan (program hari, bandara, tanggal + sisa kursi, kamar,
  *         tiket domestik) diambil dari data paket (dummy). Total otomatis.
  * Fase 2: submit → kirim booking ke admin via WhatsApp (Fonnte).

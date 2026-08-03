@@ -7,7 +7,7 @@
  *  - Prod : langsung ke Pages Functions di domain yang sama.
  *
  * Semua fungsi mengembalikan Promise — dipakai oleh hooks di
- * src/hooks/usePaket.ts. Detail endpoint: lihat BELAJAR-API.md.
+ * src/hooks/usePaket.ts. Detail endpoint: lihat BELAJAR-API (hapus dari repo, ada di lokal).
  */
 import type { Paket, JadwalUmrah } from '../data/paket'
 

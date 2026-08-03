@@ -3,7 +3,7 @@
  * CATATAN: data DUMMY — ganti dengan data asli Ebitour.
  * Gambar sementara pakai link Wikimedia Commons (ganti dengan foto asli nanti).
  *
- * Struktur mengikuti FITUR-PENCARIAN-TIKET.md:
+ * Struktur mengikuti DOKUMEN-INTERNAL:
  * - Paket (produk) → keberangkatan (jadwal: tanggal + kuota + harga per kamar)
  * - durasiList / bandara / tambahanPesawat = pilihan yang tersedia di tiket
  */

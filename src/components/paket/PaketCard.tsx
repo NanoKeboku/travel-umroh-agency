@@ -2,7 +2,7 @@
  * PaketCard — kartu paket umrah di halaman listing
  * Route tujuan: /paket-umrah/:id (halaman detail paket)
  * Status: KERANGKA — menampilkan info dasar dari data paket.ts,
- * badge promo & indikator kuota menyusul (lihat FITUR-PENCARIAN-TIKET.md)
+ * badge promo & indikator kuota menyusul (lihat DOKUMEN-INTERNAL)
  */
 import { Link } from 'react-router-dom'
 import type { Paket } from '../../data/paket'

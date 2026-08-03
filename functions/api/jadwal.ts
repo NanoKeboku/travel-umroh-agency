@@ -3,7 +3,7 @@
  * Route: GET /api/jadwal?paket=<slug>
  *   → daftar tanggal berangkat + sisa kuota + harga per kamar
  *
- * Catatan (FITUR-PENCARIAN-TIKET.md): "tanggal berangkat" adalah filter
+ * Catatan (DOKUMEN-INTERNAL): "tanggal berangkat" adalah filter
  * JADWAL, bukan filter paket — endpoint ini sumber data widget pencarian.
  */
 interface Env {

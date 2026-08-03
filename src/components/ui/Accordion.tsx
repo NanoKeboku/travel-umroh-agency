@@ -1,7 +1,7 @@
 /**
  * AccordionSection — section yang bisa dibuka/tutup
  * Dipakai di halaman detail paket (Fasilitas, Persyaratan, Itinerary,
- * Penerbangan, Syarat & Ketentuan) — lihat FITUR-PENCARIAN-TIKET.md 3c.
+ * Penerbangan, Syarat & Ketentuan) — lihat DOKUMEN-INTERNAL 3c.
  */
 import { useState } from 'react'
 import type { ReactNode } from 'react'

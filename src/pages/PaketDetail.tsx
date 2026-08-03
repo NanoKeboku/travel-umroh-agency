@@ -1,7 +1,7 @@
 /**
  * Halaman: Detail Paket (Umrah & Haji)
  * Route: /paket-umrah/:slug dan /paket-haji/:slug
- * Blueprint: FITUR-PENCARIAN-TIKET.md 3b & 3c.
+ * Blueprint: DOKUMEN-INTERNAL 3b & 3c.
  * Menu Fasilitas / Persyaratan / Itinerary / Penerbangan / S&K
  * pakai Accordion (bisa dibuka-tutup). Form pesan sticky di kanan.
  */

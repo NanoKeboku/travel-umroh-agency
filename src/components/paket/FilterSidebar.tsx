@@ -1,7 +1,7 @@
 /**
  * FilterSidebar — filter daftar paket umroh
  * Status: KERANGKA — UI placeholder, logika filter menyusul fase 2
- * Rencana filter (FITUR-PENCARIAN-TIKET.md): jenis, range harga,
+ * Rencana filter (DOKUMEN-INTERNAL): jenis, range harga,
  * bulan, bintang hotel, "hanya promo".
  */
 import Badge from '../ui/Badge'
