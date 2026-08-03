@@ -1,11 +1,11 @@
 /**
  * Asatidzah — section Pembimbing Umrah & Haji Khusus (Beranda)
+ * SATU carousel: 8 orang, kartu besar, tinggi section ±523px.
  * Background: foto Masjid Nabawi (Wikimedia) + overlay gelap.
- * Carousel paged: tiap slide berisi 6 kartu, grid 4 kolom ke bawah
- * (mobile 2 kolom, sm 3 kolom). 16 orang → 3 slide (6-6-4).
+ * Responsive per view: 1 (mobile) → 2 (sm) → 3 (lg) → 4 (xl).
  * Ditempatkan di atas section Testimoni.
  */
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Icon from '../ui/Icon'
 import SectionHeading from '../ui/SectionHeading'
@@ -15,28 +15,43 @@ import { ASATIDZAH } from '../../data/asatidzah'
 const BG_NABAWI =
   'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Al-Masjid_an_Nabawi.jpg/960px-Al-Masjid_an_Nabawi.jpg'
 
-/** Jumlah kartu per slide */
-const PER_SLIDE = 6
-
-/** Pecah data jadi halaman-halaman berisi 6 kartu */
-function chunk<T>(arr: T[], size: number): T[][] {
-  const out: T[][] = []
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size))
-  return out
+/** Jumlah kartu terlihat per ukuran layar */
+function cardsPerView(): number {
+  if (typeof window === 'undefined') return 4
+  const w = window.innerWidth
+  if (w < 640) return 1
+  if (w < 1024) return 2
+  if (w < 1280) return 3
+  return 4
 }
 
 function Asatidzah() {
-  const pages = chunk(ASATIDZAH, PER_SLIDE) // 3 slide: 6-6-4
-  const [page, setPage] = useState(0)
-  const total = pages.length
+  const [perView, setPerView] = useState(4)
+  const [index, setIndex] = useState(0)
 
-  const prev = () => setPage((p) => Math.max(0, p - 1))
-  const next = () => setPage((p) => Math.min(total - 1, p + 1))
-  const canPrev = page > 0
-  const canNext = page < total - 1
+  const total = ASATIDZAH.length // 8
+  const maxIndex = Math.max(0, total - perView)
+
+  useEffect(() => {
+    function onResize() {
+      setPerView(cardsPerView())
+    }
+    onResize()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  useEffect(() => {
+    setIndex((i) => Math.min(i, maxIndex))
+  }, [maxIndex])
+
+  const prev = () => setIndex((i) => Math.max(0, i - 1))
+  const next = () => setIndex((i) => Math.min(maxIndex, i + 1))
+  const canPrev = index > 0
+  const canNext = index < maxIndex
 
   return (
-    <section className="relative overflow-hidden bg-brand-950 py-16 sm:py-20 lg:py-24">
+    <section className="relative h-[523px] overflow-hidden bg-brand-950">
       {/* Background foto + overlay */}
       <div className="absolute inset-0">
         <img
@@ -50,7 +65,7 @@ function Asatidzah() {
         <div className="absolute inset-0 bg-gradient-to-b from-brand-950/60 via-transparent to-brand-950/80" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="relative mx-auto flex h-full max-w-7xl flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -61,44 +76,40 @@ function Asatidzah() {
             variant="dark"
             eyebrow="Asatidzah Pembimbing"
             title="Pembimbing Umrah & Haji Khusus"
-            description="Dibimbing langsung oleh para asatidzah hafidz Qur'an dan muthawif berpengalaman, siap membimbing setiap rangkaian ibadah Anda di Tanah Suci."
           />
         </motion.div>
 
-        {/* Carousel — tiap slide 6 kartu */}
+        {/* SATU carousel */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="mt-10"
+          className="mt-6"
         >
           <div className="relative">
             <div className="overflow-hidden">
               <div
                 className="flex transition-transform duration-500 ease-out"
-                style={{ transform: `translateX(-${page * 100}%)` }}
+                style={{ transform: `translateX(-${index * (100 / perView)}%)` }}
               >
-                {pages.map((pg, i) => (
-                  <div key={i} className="w-full shrink-0 px-2.5">
-                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-                      {pg.map((a) => (
-                        <div
-                          key={a.id}
-                          className="rounded-2xl bg-white/95 p-5 text-center shadow-lg ring-1 ring-white/20 backdrop-blur transition-transform duration-300 hover:-translate-y-1"
-                        >
-                          <img
-                            src={a.foto}
-                            alt={a.nama}
-                            loading="lazy"
-                            className="mx-auto h-20 w-20 rounded-full object-cover ring-4 ring-brand-100"
-                          />
-                          <h3 className="mt-4 text-sm font-bold leading-snug text-brand-900">
-                            {a.nama}
-                          </h3>
-                          <p className="mt-1 text-xs font-medium text-brand-600">{a.peran}</p>
-                        </div>
-                      ))}
+                {ASATIDZAH.map((a) => (
+                  <div
+                    key={a.id}
+                    className="shrink-0 px-2.5"
+                    style={{ width: `${100 / perView}%` }}
+                  >
+                    <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-white/95 px-5 py-7 text-center shadow-lg ring-1 ring-white/20 backdrop-blur transition-transform duration-300 hover:-translate-y-1">
+                      <img
+                        src={a.foto}
+                        alt={a.nama}
+                        loading="lazy"
+                        className="h-24 w-24 rounded-full object-cover ring-4 ring-brand-100"
+                      />
+                      <h3 className="mt-4 text-sm font-bold leading-snug text-brand-900">
+                        {a.nama}
+                      </h3>
+                      <p className="mt-1 text-xs font-medium text-brand-600">{a.peran}</p>
                     </div>
                   </div>
                 ))}
@@ -126,16 +137,16 @@ function Asatidzah() {
             </button>
           </div>
 
-          {/* Dots — jumlah slide (3) */}
-          <div className="mt-6 flex justify-center gap-2">
-            {pages.map((_, i) => (
+          {/* Dots */}
+          <div className="mt-5 flex justify-center gap-2">
+            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
               <button
                 key={i}
                 type="button"
-                onClick={() => setPage(i)}
+                onClick={() => setIndex(i)}
                 aria-label={`Slide ${i + 1}`}
                 className={`h-2 rounded-full transition-all ${
-                  i === page ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+                  i === index ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
                 }`}
               />
             ))}
