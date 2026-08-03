@@ -69,7 +69,7 @@ function Kontak() {
       {/* Header */}
       <section className="bg-brand-950 py-14 text-center sm:py-16">
         <div className="mx-auto max-w-3xl px-4">
-          <h1 className="font-display text-3xl text-white sm:text-4xl">Hubungi Kami</h1>
+          <h1 className="text-3xl text-white sm:text-4xl">Hubungi Kami</h1>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/70 sm:text-base">
             Konsultasikan rencana umrah & haji Anda. Tim kami siap membantu
             dari manasik hingga kepulangan.
@@ -94,7 +94,7 @@ function Kontak() {
                 <Icon name={k.ikon} className="h-6 w-6" />
               </span>
               <div>
-                <h2 className="text-sm font-bold text-brand-900">{k.judul}</h2>
+                <h2 className="text-sm text-brand-900">{k.judul}</h2>
                 <p className="mt-1 break-words text-sm text-gray-600">{k.nilai}</p>
                 <p className="mt-1 text-xs text-gray-400">{k.sub}</p>
               </div>
@@ -106,7 +106,7 @@ function Kontak() {
         <div className="mt-12 grid gap-8 lg:grid-cols-2">
           {/* Form kontak → WhatsApp */}
           <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-soft sm:p-8">
-            <h2 className="font-display text-2xl text-brand-900">Kirim Pesan</h2>
+            <h2 className="text-2xl text-brand-900">Kirim Pesan</h2>
             <p className="mt-2 text-sm text-gray-500">
               Isi formulir di bawah, pesan akan langsung terkirim ke WhatsApp
               admin kami.
@@ -196,7 +196,7 @@ function Kontak() {
 
         {/* CTA WhatsApp langsung */}
         <div className="mt-12 rounded-2xl bg-gradient-to-br from-brand-800 to-brand-600 p-8 text-center sm:p-10">
-          <h2 className="font-display text-2xl text-white sm:text-3xl">
+          <h2 className="text-2xl text-white sm:text-3xl">
             Lebih Nyaman Chat Langsung?
           </h2>
           <p className="mx-auto mt-2 max-w-xl text-sm text-white/80">

@@ -43,7 +43,7 @@ function Hero() {
           {/* Headline */}
           <motion.p
             variants={fadeUp}
-            className="mt-6 font-display text-4xl leading-tight text-white/90 sm:text-5xl lg:text-6xl"
+            className="mt-6 text-4xl leading-tight text-white/90 sm:text-5xl lg:text-6xl"
           >
             Wujudkan Panggilan Suci,
             Ibadah dengan Hati Tenang

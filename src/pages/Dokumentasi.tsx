@@ -34,7 +34,7 @@ function Dokumentasi() {
       {/* Header */}
       <section className="bg-brand-950 py-14 text-center sm:py-16">
         <div className="mx-auto max-w-3xl px-4">
-          <h1 className="font-display text-3xl text-white sm:text-4xl">Dokumentasi</h1>
+          <h1 className="text-3xl text-white sm:text-4xl">Dokumentasi</h1>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/70 sm:text-base">
             Bukti nyata perjalanan jamaah Ebitour — dari manasik, keberangkatan,
             hingga ibadah di Tanah Suci.
@@ -73,7 +73,7 @@ function Dokumentasi() {
             return (
               <section key={k}>
                 <div className="flex items-end justify-between gap-4">
-                  <h2 className="font-display text-2xl text-brand-900 sm:text-3xl">{k}</h2>
+                  <h2 className="text-2xl text-brand-900 sm:text-3xl">{k}</h2>
                   <span className="rounded-full bg-brand-100 px-3 py-1 text-xs font-semibold text-brand-700">
                     {items.length} foto
                   </span>
@@ -105,7 +105,7 @@ function Dokumentasi() {
                         )}
                       </div>
                       <figcaption className="p-5">
-                        <h3 className="text-base font-bold text-brand-900">{item.judul}</h3>
+                        <h3 className="text-base text-brand-900">{item.judul}</h3>
                         {item.deskripsi && (
                           <p className="mt-1.5 text-sm leading-relaxed text-gray-500">
                             {item.deskripsi}
@@ -122,7 +122,7 @@ function Dokumentasi() {
 
         {/* CTA */}
         <div className="mt-16 rounded-2xl bg-gradient-to-br from-brand-800 to-brand-600 p-8 text-center sm:p-10">
-          <h2 className="font-display text-2xl text-white sm:text-3xl">
+          <h2 className="text-2xl text-white sm:text-3xl">
             Ingin Melihat Dokumentasi Lainnya?
           </h2>
           <p className="mx-auto mt-2 max-w-xl text-sm text-white/80">

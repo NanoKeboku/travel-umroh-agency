@@ -16,7 +16,7 @@ function GaleriPreview() {
     <section className="bg-brand-900 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div variants={staggerContainer} initial={false}>
-          <h2 className="font-display text-3xl text-white sm:text-4xl">
+          <h2 className="text-3xl text-white sm:text-4xl">
             Bukti Nyata Perjalanan Jamaah Kami
           </h2>
           <p className="mt-3 max-w-2xl text-white/80">

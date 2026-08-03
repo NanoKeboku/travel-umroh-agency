@@ -81,7 +81,7 @@ function About() {
       {/* ===== Header halaman ===== */}
       <section className="bg-brand-950 py-16 text-center sm:py-20">
         <div className="mx-auto max-w-3xl px-4">
-          <h1 className="font-display text-3xl text-white sm:text-4xl">
+          <h1 className="text-3xl text-white sm:text-4xl">
             Travel Umrah Ebitour Purworejo
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm text-white/70 sm:text-base">
@@ -115,7 +115,7 @@ function About() {
             variants={staggerContainer}
             initial={false}
           >
-            <motion.h2 variants={fadeUp} className="mt-3 font-display text-3xl text-brand-950 sm:text-4xl">
+            <motion.h2 variants={fadeUp} className="mt-3 text-3xl text-brand-950 sm:text-4xl">
               Berangkat dengan Tenang, Ibadah dengan Khusyuk
             </motion.h2>
             <motion.p variants={fadeUp} className="mt-5 leading-relaxed text-gray-500">
@@ -159,7 +159,7 @@ function About() {
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
               <Icon name="star" className="h-6 w-6" />
             </span>
-            <h3 className="mt-4 text-xl font-bold text-brand-900">Visi</h3>
+            <h3 className="mt-4 text-xl text-brand-900">Visi</h3>
             <p className="mt-2 leading-relaxed text-gray-500">
               Menjadi penyelenggara perjalanan ibadah umrah dan haji yang
               terpercaya, amanah, dan menjadi pilihan utama masyarakat
@@ -175,7 +175,7 @@ function About() {
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
               <Icon name="check" className="h-6 w-6" />
             </span>
-            <h3 className="mt-4 text-xl font-bold text-brand-900">Misi</h3>
+            <h3 className="mt-4 text-xl text-brand-900">Misi</h3>
             <ul className="mt-3 space-y-2.5 text-gray-500">
               {[
                 'Memberikan pelayanan ibadah terbaik dengan standar profesional',
@@ -200,7 +200,7 @@ function About() {
             initial={false}
             className="mx-auto max-w-2xl text-center"
           >
-            <h2 className="mt-3 text-3xl font-extrabold text-brand-950">
+            <h2 className="mt-3 text-3xl text-brand-950">
               Prinsip yang Menjadi Pegangan
             </h2>
           </motion.div>
@@ -219,7 +219,7 @@ function About() {
                 <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
                   <Icon name={n.ikon} className="h-7 w-7" />
                 </span>
-                <h3 className="mt-4 text-lg font-bold text-brand-900">{n.judul}</h3>
+                <h3 className="mt-4 text-lg text-brand-900">{n.judul}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-gray-500">{n.desc}</p>
               </motion.div>
             ))}
@@ -247,7 +247,7 @@ function About() {
             initial={false}
             className="mx-auto max-w-2xl text-center"
           >
-            <h2 className="mt-3 text-3xl font-extrabold text-brand-950">
+            <h2 className="mt-3 text-3xl text-brand-950">
               Pembimbing yang Mendampingi Anda
             </h2>
             <p className="mt-3 text-gray-500">
@@ -273,7 +273,7 @@ function About() {
                   loading="lazy"
                   className="mx-auto h-20 w-20 rounded-full ring-4 ring-brand-100"
                 />
-                <h3 className="mt-4 text-base font-bold text-brand-900">{t.nama}</h3>
+                <h3 className="mt-4 text-base text-brand-900">{t.nama}</h3>
                 <p className="mt-1 text-sm text-brand-600">{t.peran}</p>
               </motion.div>
             ))}
@@ -288,7 +288,7 @@ function About() {
         >
           <div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
             <div className="max-w-xl text-center lg:text-left">
-              <h2 className="text-2xl font-extrabold text-brand-950">Legalitas & Kepercayaan</h2>
+              <h2 className="text-2xl text-brand-950">Legalitas & Kepercayaan</h2>
               <p className="mt-2 text-sm text-gray-500">
                 Perusahaan terdaftar resmi dan diawasi, sehingga perjalanan
                 ibadah Anda terlindungi dan terjamin.
@@ -335,7 +335,7 @@ function About() {
           initial={false}
           className="mt-20 rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 p-10 text-center sm:p-14"
         >
-          <h2 className="text-2xl font-extrabold text-white sm:text-3xl">
+          <h2 className="text-2xl text-white sm:text-3xl">
             Siap Berangkat ke Tanah Suci?
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-sm text-white/70 sm:text-base">

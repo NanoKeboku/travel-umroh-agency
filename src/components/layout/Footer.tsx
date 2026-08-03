@@ -64,7 +64,7 @@ function Footer() {
 
         {/* Kolom 2: Tautan utama */}
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-white/80">
+          <p className="text-sm font-normal tracking-wide text-white/70">
             Halaman
           </p>
           <ul className="mt-4 space-y-2.5">
@@ -83,7 +83,7 @@ function Footer() {
 
         {/* Kolom 3: Bantuan */}
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-white/80">
+          <p className="text-sm font-normal tracking-wide text-white/70">
             Bantuan
           </p>
           <ul className="mt-4 space-y-2.5">
@@ -102,7 +102,7 @@ function Footer() {
 
         {/* Kolom 4: Kontak */}
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-white/80">
+          <p className="text-sm font-normal tracking-wide text-white/70">
             Hubungi Kami
           </p>
           <ul className="mt-4 space-y-3 text-sm text-white/60">

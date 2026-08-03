@@ -74,7 +74,7 @@ function PesanPaketForm({ paket, initialTanggal }: PesanPaketFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-6 shadow-soft">
-      <h3 className="text-lg font-bold text-brand-900">Pesan Paket</h3>
+      <h3 className="text-lg text-brand-900">Pesan Paket</h3>
       <p className="mt-1 text-xs text-gray-400">
         {paket.nama} · {programHari} · {paket.maskapai}
       </p>

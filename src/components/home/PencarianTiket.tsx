@@ -44,7 +44,7 @@ function KartuPaket({ paket }: { paket: Paket }) {
 
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <Link to={target} className="hover:underline">
-          <h3 className="text-base font-bold text-brand-900 sm:text-lg">{paket.nama}</h3>
+          <h3 className="text-base text-brand-900 sm:text-lg">{paket.nama}</h3>
         </Link>
         <p className="mt-1 flex items-center gap-1.5 text-xs text-gray-400">
           <Icon name="plane" className="h-3.5 w-3.5" />

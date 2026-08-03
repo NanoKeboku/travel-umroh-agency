@@ -36,7 +36,7 @@ function PaketCard({ paket }: PaketCardProps) {
         </div>
 
         <div className="p-5">
-          <h3 className="text-lg font-bold text-brand-900">{paket.nama}</h3>
+          <h3 className="text-lg text-brand-900">{paket.nama}</h3>
           <p className="mt-1 text-sm text-gray-500">{paket.maskapai}</p>
           <p className="mt-1 text-xs text-gray-400">
             {paket.jadwal} · {paket.hotel}

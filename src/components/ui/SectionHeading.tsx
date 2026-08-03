@@ -23,7 +23,7 @@ function SectionHeading({
   return (
     <div className={centered ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl text-left'}>
       <h2
-        className={`font-display text-3xl ${
+        className={`text-3xl ${
           dark ? 'text-white' : 'text-brand-900'
         }`}
       >

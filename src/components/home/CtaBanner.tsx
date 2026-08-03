@@ -19,7 +19,7 @@ function CtaBanner() {
         >
           <motion.p
             variants={fadeUp}
-            className="relative font-display text-2xl text-white sm:text-4xl"
+            className="relative text-2xl text-white sm:text-4xl"
           >
             Siap Menunaikan Ibadah Umrah?
           </motion.p>

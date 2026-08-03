@@ -10,7 +10,7 @@ function FilterSidebar() {
   return (
     <aside className="rounded-2xl bg-white p-5 shadow-soft">
       <div className="flex items-center justify-between">
-        <h2 className="text-base font-bold text-brand-900">Filter</h2>
+        <h2 className="text-base text-brand-900">Filter</h2>
         <Badge>menyusul</Badge>
       </div>
 

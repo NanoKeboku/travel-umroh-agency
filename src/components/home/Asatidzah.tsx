@@ -78,7 +78,7 @@ function Asatidzah() {
                         loading="lazy"
                         className="h-24 w-24 rounded-full object-cover ring-4 ring-brand-100"
                       />
-                      <h3 className="mt-4 text-sm font-bold leading-snug text-brand-900">
+                      <h3 className="mt-4 text-sm leading-snug text-brand-900">
                         {a.nama}
                       </h3>
                       <p className="mt-1 text-xs font-medium text-brand-600">{a.peran}</p>

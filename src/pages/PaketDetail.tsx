@@ -21,7 +21,7 @@ function PenerbanganTabel({ judul, legs }: { judul: string; legs?: PenerbanganLe
   }
   return (
     <div>
-      <h3 className="text-sm font-semibold text-gray-700">{judul}</h3>
+      <h3 className="text-sm text-gray-700">{judul}</h3>
       <div className="mt-2 overflow-x-auto">
         <table className="w-full min-w-[480px] text-sm">
           <thead>
@@ -70,7 +70,7 @@ function PaketDetail() {
   if (!paket) {
     return (
       <section className="mx-auto max-w-3xl px-4 py-24 text-center">
-        <h1 className="text-3xl font-bold text-brand-900">Paket tidak ditemukan</h1>
+        <h1 className="text-3xl text-brand-900">Paket tidak ditemukan</h1>
         <p className="mt-3 text-gray-500">
           Paket dengan tautan ini tidak ada atau sudah tidak tersedia.
         </p>
@@ -119,7 +119,7 @@ function PaketDetail() {
             <Badge className="bg-sand-200 text-brand-900">{labelJenis}</Badge>
             {paket.maskapai && <Badge className="bg-brand-50 text-brand-700">{paket.maskapai}</Badge>}
           </div>
-          <h1 className="mt-3 font-display text-3xl text-brand-900">{paket.nama}</h1>
+          <h1 className="mt-3 text-3xl text-brand-900">{paket.nama}</h1>
           <p className="mt-2 text-gray-500">{paket.hotel}</p>
 
           <div className="mt-6">

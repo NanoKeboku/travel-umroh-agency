@@ -15,7 +15,7 @@ function Galeri() {
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-100 text-brand-600">
           <Icon name="sparkle" className="h-8 w-8" />
         </span>
-        <h1 className="mt-6 font-display text-3xl text-brand-900">Galeri Segera Hadir</h1>
+        <h1 className="mt-6 text-3xl text-brand-900">Galeri Segera Hadir</h1>
         <p className="mx-auto mt-3 max-w-md text-sm text-gray-500">
           Galeri foto & video perjalanan jamaah sedang disiapkan. Sementara
           itu, lihat dokumentasi keberangkatan di halaman Dokumentasi.

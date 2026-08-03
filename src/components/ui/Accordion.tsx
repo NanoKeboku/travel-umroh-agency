@@ -24,7 +24,7 @@ function AccordionSection({ title, children, defaultOpen = false }: AccordionSec
         aria-expanded={open}
         className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left transition-colors hover:bg-gray-50"
       >
-        <h2 className="text-lg font-bold text-brand-900">{title}</h2>
+        <h2 className="text-lg text-brand-900">{title}</h2>
         <Icon
           name="chevronDown"
           className={`h-5 w-5 shrink-0 text-gray-400 transition-transform duration-200 ${

@@ -68,7 +68,7 @@ function Keunggulan() {
                 <Icon name={k.ikon} className="h-6 w-6" />
               </span>
               <div>
-                <h3 className="text-base font-bold text-brand-900">{k.judul}</h3>
+                <h3 className="text-base text-brand-900">{k.judul}</h3>
                 <p className="mt-1.5 text-sm leading-relaxed text-gray-500">{k.desc}</p>
               </div>
             </motion.div>
