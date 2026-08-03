@@ -141,8 +141,11 @@ function PaketUnggulan() {
           </div>
         </motion.div>
 
-        {/* Grid kartu — 1 kolom mobile, 2 tablet, 3 desktop */}
+        {/* Grid kartu — 1 kolom mobile, 2 tablet, 3 desktop
+            key={tab} → remount saat ganti tab, biar animasi whileInView
+            jalan ulang (tanpa ini kartu baru tak muncul: bug viewportOnce) */}
         <motion.div
+          key={tab}
           variants={staggerContainer}
           initial="hidden"
           whileInView="show"
