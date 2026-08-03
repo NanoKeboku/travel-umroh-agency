@@ -26,7 +26,7 @@ function SectionHeading({
         </p>
       )}
       <h2
-        className={`mt-2 text-3xl font-bold ${
+        className={`mt-2 font-display text-3xl ${
           dark ? 'text-white' : 'text-brand-900'
         }`}
       >

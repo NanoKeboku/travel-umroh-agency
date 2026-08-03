@@ -29,12 +29,12 @@ function CtaBanner() {
             className="absolute -bottom-12 -left-12 h-56 w-56 rounded-full bg-white/10 blur-2xl"
           />
 
-          <motion.h2
+          <motion.p
             variants={fadeUp}
-            className="relative text-2xl font-extrabold text-white sm:text-4xl"
+            className="relative text-2xl font-extrabold text-white sm:text-4xl text-white/90"
           >
             Siap Menunaikan Ibadah Umrah?
-          </motion.h2>
+          </motion.p>
           <motion.p
             variants={fadeUp}
             className="relative mx-auto mt-4 max-w-xl text-white/80"

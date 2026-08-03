@@ -12,9 +12,6 @@ import SectionHeading from '../ui/SectionHeading'
 import { fadeUp, viewportOnce } from './anim'
 import { ASATIDZAH } from '../../data/asatidzah'
 
-const BG_NABAWI =
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Al-Masjid_an_Nabawi.jpg/960px-Al-Masjid_an_Nabawi.jpg'
-
 /** Jumlah kartu terlihat per ukuran layar */
 function cardsPerView(): number {
   if (typeof window === 'undefined') return 4
@@ -51,20 +48,8 @@ function Asatidzah() {
   const canNext = index < maxIndex
 
   return (
-    <section className="relative h-[523px] overflow-hidden bg-brand-950">
+    <section className="relative h-[523px] overflow-hidden bg-white/90">
       {/* Background foto + overlay */}
-      <div className="absolute inset-0">
-        <img
-          src={BG_NABAWI}
-          alt=""
-          aria-hidden="true"
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute inset-0 bg-brand-950/85" />
-        <div className="absolute inset-0 bg-gradient-to-b from-brand-950/60 via-transparent to-brand-950/80" />
-      </div>
-
       <div className="relative mx-auto flex h-full max-w-7xl flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
         <motion.div
           variants={fadeUp}
@@ -145,9 +130,8 @@ function Asatidzah() {
                 type="button"
                 onClick={() => setIndex(i)}
                 aria-label={`Slide ${i + 1}`}
-                className={`h-2 rounded-full transition-all ${
-                  i === index ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
-                }`}
+                className={`h-2 rounded-full transition-all ${i === index ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+                  }`}
               />
             ))}
           </div>

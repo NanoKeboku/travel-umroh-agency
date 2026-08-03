@@ -7,7 +7,7 @@ interface BubbleProps extends HTMLAttributes<HTMLSpanElement> {
 function Bubble({ children, className = '', ...rest }: BubbleProps) {
     return (
         <span
-            className={`inline-flex items-center rounded-full py-1 text-xs font-medium text-brand700 ${className}`} {...rest}
+            className={`inline-flex items-center rounded-full py-1 text-xs font-medium text-brand-700 ${className}`} {...rest}
         >
             {children}
         </span>

@@ -106,7 +106,7 @@ function PaketDetail() {
             <Badge className="bg-sand-200 text-brand-900">{labelJenis}</Badge>
             {paket.maskapai && <Badge className="bg-brand-50 text-brand-700">{paket.maskapai}</Badge>}
           </div>
-          <h1 className="mt-3 text-3xl font-bold text-brand-900">{paket.nama}</h1>
+          <h1 className="mt-3 font-display text-3xl text-brand-900">{paket.nama}</h1>
           <p className="mt-2 text-gray-500">{paket.hotel}</p>
 
           <div className="mt-6">

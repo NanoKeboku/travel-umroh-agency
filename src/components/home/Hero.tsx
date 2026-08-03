@@ -43,7 +43,7 @@ function Hero() {
           {/* Headline */}
           <motion.p
             variants={fadeUp}
-            className="mt-6 text-4xl  leading-tight sm:text-5xl lg:text-6xl text-white/90"
+            className="mt-6 font-display text-4xl leading-tight text-white/90 sm:text-5xl lg:text-6xl"
           >
             Wujudkan Panggilan Suci,
             Ibadah dengan Hati Tenang
@@ -78,8 +78,8 @@ function Hero() {
             {[
               { angka: '2.500+', label: 'Jamaah' },
               { angka: '10+', label: 'Tahun' },
-              { angka: '48+', label: 'Keberangkatan' },
-              { angka: '5.0', label: 'Rating' },
+              { angka: '120+', label: 'Keberangkatan' },
+              { angka: '98%', label: 'Kepuasan' },
             ].map((s) => (
               <div key={s.label}>
                 {/* Ubah text-white menjadi warna gelap biar kontras dengan background putih */}

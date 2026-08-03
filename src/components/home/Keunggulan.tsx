@@ -1,5 +1,7 @@
 /**
- * Keunggulan — alasan memilih Ebitour (grid 4 ikon)
+ * Keunggulan — alasan memilih Ebitour
+ * Layout asimetris: kartu horizontal (ikon inline kiri) 2 kolom,
+ * kartu terakhir diberi aksen — bukan 4 kartu ikon-atas yang seragam.
  */
 import { motion } from 'framer-motion'
 import Icon from '../ui/Icon'
@@ -32,7 +34,7 @@ const KEUNGGULAN: { ikon: IconName; judul: string; desc: string }[] = [
 
 function Keunggulan() {
   return (
-    <section className="bg-white py-20 sm:py-24">
+    <section className="bg-white py-16 sm:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
@@ -52,19 +54,25 @@ function Keunggulan() {
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4"
+          className="mt-12 grid gap-5 sm:grid-cols-2"
         >
-          {KEUNGGULAN.map((k) => (
+          {KEUNGGULAN.map((k, i) => (
             <motion.div
               key={k.judul}
               variants={fadeUp}
-              className="group rounded-2xl border border-gray-100 bg-white p-6 text-center shadow-soft transition-all hover:-translate-y-1 hover:border-brand-200 hover:shadow-lg"
+              className={`group flex items-start gap-4 rounded-2xl border p-6 shadow-soft transition hover:-translate-y-0.5 hover:shadow-lg ${
+                i === KEUNGGULAN.length - 1
+                  ? 'border-brand-100 bg-brand-50'
+                  : 'border-gray-100 bg-white hover:border-brand-200'
+              }`}
             >
-              <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
-                <Icon name={k.ikon} className="h-7 w-7" />
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-brand-100 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
+                <Icon name={k.ikon} className="h-6 w-6" />
               </span>
-              <h3 className="mt-5 text-base font-bold text-brand-900">{k.judul}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-gray-500">{k.desc}</p>
+              <div>
+                <h3 className="text-base font-bold text-brand-900">{k.judul}</h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-gray-500">{k.desc}</p>
+              </div>
             </motion.div>
           ))}
         </motion.div>

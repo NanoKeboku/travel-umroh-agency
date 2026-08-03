@@ -84,7 +84,7 @@ function About() {
           <p className="text-xs font-semibold uppercase tracking-wider text-brand-300">
             Tentang Kami
           </p>
-          <h1 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
+          <h1 className="mt-3 font-display text-3xl text-white sm:text-4xl">
             Travel Umrah Ebitour Purworejo
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm text-white/70 sm:text-base">
@@ -125,7 +125,7 @@ function About() {
             <motion.p variants={fadeUp} className="text-sm font-bold uppercase tracking-wider text-brand-500">
               Profil Perusahaan
             </motion.p>
-            <motion.h2 variants={fadeUp} className="mt-3 text-3xl font-extrabold text-brand-950 sm:text-4xl">
+            <motion.h2 variants={fadeUp} className="mt-3 font-display text-3xl text-brand-950 sm:text-4xl">
               Berangkat dengan Tenang, Ibadah dengan Khusyuk
             </motion.h2>
             <motion.p variants={fadeUp} className="mt-5 leading-relaxed text-gray-500">
