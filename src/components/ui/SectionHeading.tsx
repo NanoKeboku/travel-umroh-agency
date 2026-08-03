@@ -1,32 +1,29 @@
 /**
- * SectionHeading — judul section konsisten (eyebrow + title + deskripsi)
+ * SectionHeading — judul section konsisten (title + deskripsi)
  * Props:
- *  - eyebrow, title, description : teks
+ *  - title, description          : teks
  *  - variant="light" | "dark"    : untuk latar terang / gelap
+ *  - align="center" | "left"     : perataan (default center)
  */
 interface SectionHeadingProps {
-  eyebrow?: string
   title: string
   description?: string
   variant?: 'light' | 'dark'
+  align?: 'center' | 'left'
 }
 
 function SectionHeading({
-  eyebrow,
   title,
   description,
   variant = 'light',
+  align = 'center',
 }: SectionHeadingProps) {
   const dark = variant === 'dark'
+  const centered = align === 'center'
   return (
-    <div className="mx-auto max-w-2xl text-center">
-      {eyebrow && (
-        <p className="text-xs font-semibold uppercase tracking-wider text-brand-500">
-          {eyebrow}
-        </p>
-      )}
+    <div className={centered ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl text-left'}>
       <h2
-        className={`mt-2 font-display text-3xl ${
+        className={`font-display text-3xl ${
           dark ? 'text-white' : 'text-brand-900'
         }`}
       >

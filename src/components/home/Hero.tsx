@@ -1,6 +1,6 @@
 /**
  * Hero — bagian pembuka halaman Beranda
- * Gaya: background foto (Ka'bah malam) + overlay gradasi gelap,
+ * Gaya: background foto (Ka’bah malam) + overlay gradasi gelap,
  * konten kiri, kartu kaca melayang (informasi singkat) di kanan.
  * Mobile-first: kartu di bawah teks, naik ke kanan di lg.
  */
@@ -17,7 +17,7 @@ function Hero() {
       <div className="absolute inset-0">
         <img
           src="/images/hero/hero.jpg"
-          alt="Ka'bah di malam hari"
+          alt="Ka’bah di malam hari"
           className="h-full w-full object-cover object-center"
           loading="eager"
         />

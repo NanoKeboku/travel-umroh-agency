@@ -43,6 +43,7 @@ function Keunggulan() {
           viewport={viewportOnce}
         >
           <SectionHeading
+            align="left"
             title="Perjalanan Ibadah yang Tenang & Bermakna"
             description="Kepercayaan calon jamaah adalah prioritas kami."
           />

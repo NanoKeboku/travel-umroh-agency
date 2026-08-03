@@ -19,7 +19,7 @@ function TestimoniSlider() {
   const next = () => setIndex((i) => (i + 1) % total)
 
   return (
-    <section className="bg-sand-100 py-20 sm:py-24">
+    <section className="bg-sand-100 py-16 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
@@ -28,6 +28,7 @@ function TestimoniSlider() {
           viewport={viewportOnce}
         >
           <SectionHeading
+            align="left"
             title="Kata Mereka yang Telah Berangkat"
             description="Pengalaman nyata jamaah Ebitour dalam perjalanan ibadahnya."
           />
@@ -54,8 +55,8 @@ function TestimoniSlider() {
                 transition={{ duration: 0.35, ease: 'easeOut' }}
                 className="relative"
               >
-                {/* Rating bintang */}
-                <div className="flex gap-1 text-amber-400">
+                {/* Rating bintang — pakai brand (token), bukan amber luar palet */}
+                <div className="flex gap-1 text-brand-500">
                   {Array.from({ length: 5 }).map((_, i) => (
                     <Icon
                       key={i}

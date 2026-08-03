@@ -24,6 +24,7 @@ function GaleriPreview() {
         >
           <SectionHeading
             variant="dark"
+            align="left"
             title="Bukti Nyata Perjalanan Jamaah Kami"
             description="Foto dan video keberangkatan jamaah Ebitour — social proof yang bisa Anda lihat langsung."
           />

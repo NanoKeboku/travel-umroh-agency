@@ -97,6 +97,7 @@ function PencarianTiket() {
         {/* Pencarian tiket */}
         <motion.div variants={staggerContainer} initial={false}>
           <SectionHeading
+            align="left"
             title="Temukan Jadwal Keberangkatan Anda"
             description="Pilih bulan keberangkatan dan jenis paket untuk melihat tiket umroh yang tersedia."
           />

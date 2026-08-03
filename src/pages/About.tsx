@@ -125,7 +125,7 @@ function About() {
               nyaman, aman, dan sesuai tuntunan syariat.
             </motion.p>
             <motion.p variants={fadeUp} className="mt-4 leading-relaxed text-gray-500">
-              Dengan dukungan tim pembimbing yang hafal Al-Qur'an, muthawif
+              Dengan dukungan tim pembimbing yang hafal Al-Qur’an, muthawif
               berpengalaman, serta jaringan hotel dan maskapai terpercaya,
               kami telah mengantarkan ribuan jamaah ke Tanah Suci — dari
               persiapan manasik, pengurusan visa dan paspor, hingga pendampingan
