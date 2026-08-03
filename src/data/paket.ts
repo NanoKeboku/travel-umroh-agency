@@ -8,10 +8,15 @@ export interface Paket {
   jenis: 'umrah' | 'haji'
   nama: string
   harga: number
+  hargaQuad?: number // harga per pax kamar Quad (4 orang)
+  hargaTriple?: number // harga per pax kamar Triple (3 orang)
+  hargaDouble?: number // harga per pax kamar Double (2 orang)
+  dpPerPax?: number // uang muka per pax (mis. 15.000.000)
   durasi: string // contoh: "9 Hari"
   jadwal: string // contoh: "Desember 2026"
   maskapai: string
   hotel: string // contoh: "Makkah: Hilton • Madinah: Anwar"
+  bandara?: string // bandara keberangkatan (mis. "Soekarno-Hatta")
   fasilitas: string[]
   persyaratan: string[]
   gambar: string // URL / path gambar utama kartu

@@ -4,7 +4,6 @@
  */
 import { motion } from 'framer-motion'
 import Icon from '../ui/Icon'
-import SectionHeading from '../ui/SectionHeading'
 import { staggerContainer, fadeUp, fadeIn, viewportOnce } from './anim'
 
 function TentangRingkasan() {
@@ -16,13 +15,24 @@ function TentangRingkasan() {
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
+          className='grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-16'
         >
-
-          <SectionHeading
-            eyebrow="Tentang Kami"
-            title="Perjalanan Ibadah yang Terpercaya & Berpengalaman"
-            description="Ebitour hadir sebagai mitra perjalanan ibadah yang mengutamakan kenyamanan, keamanan, dan kekhusyukan jamaah."
-          />
+          {/* ===== KONTEN KIRI: Eyebrow & Judul ===== */}
+          <motion.div variants={fadeUp}>
+            <p className="text-sm font-bold uppercase tracking-wider text-sky-600">
+              Tentang Kami
+            </p>
+            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-brand-950 sm:text-4xl">
+              Perjalanan Ibadah yang Terpercaya & Berpengalaman
+            </h2>
+          </motion.div>
+          <motion.div variants={fadeUp} className="mt-4 lg:mt-10">
+            <motion.p variants={fadeUp} className="mt-4 lg:mt-10">
+              Travel Umrah Ebitour Purworejo adalah penyedia layanan perjalanan
+              ibadah umrah dan haji yang telah mendampingi ribuan jamaah dari
+              Purworejo dan sekitarnya.
+            </motion.p>
+          </motion.div>
         </motion.div>
 
         <div className="mt-14 grid items-center gap-12 lg:grid-cols-2">
@@ -34,11 +44,6 @@ function TentangRingkasan() {
             viewport={viewportOnce}
             className="space-y-5"
           >
-            <motion.p variants={fadeUp} className="text-lg leading-relaxed text-gray-600">
-              Travel Umrah Ebitour Purworejo adalah penyedia layanan perjalanan
-              ibadah umrah dan haji yang telah mendampingi ribuan jamaah dari
-              Purworejo dan sekitarnya.
-            </motion.p>
             <motion.p variants={fadeUp} className="leading-relaxed text-gray-500">
               Kami berkomitmen menghadirkan pengalaman ibadah yang tenang dan
               bermakna — didukung pembimbing berpengalaman, hotel strategis,
