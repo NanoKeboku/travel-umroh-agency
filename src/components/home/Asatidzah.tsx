@@ -1,11 +1,11 @@
 /**
  * Asatidzah — section Pembimbing Umrah & Haji Khusus (Beranda)
  * Background: foto Masjid Nabawi (Wikimedia) + overlay gelap.
- * Carousel slide responsive: 1 kartu (mobile) → 2 (sm) → 3 (lg) → 4 (xl).
- * Data dummy 16 orang dari src/data/asatidzah.ts.
+ * Carousel paged: tiap slide berisi 6 kartu, grid 4 kolom ke bawah
+ * (mobile 2 kolom, sm 3 kolom). 16 orang → 3 slide (6-6-4).
  * Ditempatkan di atas section Testimoni.
  */
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Icon from '../ui/Icon'
 import SectionHeading from '../ui/SectionHeading'
@@ -15,41 +15,25 @@ import { ASATIDZAH } from '../../data/asatidzah'
 const BG_NABAWI =
   'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Al-Masjid_an_Nabawi.jpg/960px-Al-Masjid_an_Nabawi.jpg'
 
-/** Jumlah kartu yang terlihat per ukuran layar */
-function cardsPerView(): number {
-  if (typeof window === 'undefined') return 4
-  const w = window.innerWidth
-  if (w < 640) return 1
-  if (w < 1024) return 2
-  if (w < 1280) return 3
-  return 4
+/** Jumlah kartu per slide */
+const PER_SLIDE = 6
+
+/** Pecah data jadi halaman-halaman berisi 6 kartu */
+function chunk<T>(arr: T[], size: number): T[][] {
+  const out: T[][] = []
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size))
+  return out
 }
 
 function Asatidzah() {
-  const [perView, setPerView] = useState(4)
-  const [index, setIndex] = useState(0)
+  const pages = chunk(ASATIDZAH, PER_SLIDE) // 3 slide: 6-6-4
+  const [page, setPage] = useState(0)
+  const total = pages.length
 
-  const total = ASATIDZAH.length
-  const maxIndex = Math.max(0, total - perView)
-
-  useEffect(() => {
-    function onResize() {
-      setPerView(cardsPerView())
-    }
-    onResize()
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [])
-
-  // Kalau ukuran layar berubah, jangan sampai index melewati batas
-  useEffect(() => {
-    setIndex((i) => Math.min(i, maxIndex))
-  }, [maxIndex])
-
-  const prev = () => setIndex((i) => Math.max(0, i - 1))
-  const next = () => setIndex((i) => Math.min(maxIndex, i + 1))
-  const canPrev = index > 0
-  const canNext = index < maxIndex
+  const prev = () => setPage((p) => Math.max(0, p - 1))
+  const next = () => setPage((p) => Math.min(total - 1, p + 1))
+  const canPrev = page > 0
+  const canNext = page < total - 1
 
   return (
     <section className="relative overflow-hidden bg-brand-950 py-16 sm:py-20 lg:py-24">
@@ -81,7 +65,7 @@ function Asatidzah() {
           />
         </motion.div>
 
-        {/* Carousel */}
+        {/* Carousel — tiap slide 6 kartu */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -93,25 +77,28 @@ function Asatidzah() {
             <div className="overflow-hidden">
               <div
                 className="flex transition-transform duration-500 ease-out"
-                style={{ transform: `translateX(-${index * (100 / perView)}%)` }}
+                style={{ transform: `translateX(-${page * 100}%)` }}
               >
-                {ASATIDZAH.map((a) => (
-                  <div
-                    key={a.id}
-                    className="shrink-0 px-2.5"
-                    style={{ width: `${100 / perView}%` }}
-                  >
-                    <div className="rounded-2xl bg-white/95 p-5 text-center shadow-lg ring-1 ring-white/20 backdrop-blur transition-transform duration-300 hover:-translate-y-1">
-                      <img
-                        src={a.foto}
-                        alt={a.nama}
-                        loading="lazy"
-                        className="mx-auto h-20 w-20 rounded-full object-cover ring-4 ring-brand-100"
-                      />
-                      <h3 className="mt-4 text-sm font-bold leading-snug text-brand-900">
-                        {a.nama}
-                      </h3>
-                      <p className="mt-1 text-xs font-medium text-brand-600">{a.peran}</p>
+                {pages.map((pg, i) => (
+                  <div key={i} className="w-full shrink-0 px-2.5">
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+                      {pg.map((a) => (
+                        <div
+                          key={a.id}
+                          className="rounded-2xl bg-white/95 p-5 text-center shadow-lg ring-1 ring-white/20 backdrop-blur transition-transform duration-300 hover:-translate-y-1"
+                        >
+                          <img
+                            src={a.foto}
+                            alt={a.nama}
+                            loading="lazy"
+                            className="mx-auto h-20 w-20 rounded-full object-cover ring-4 ring-brand-100"
+                          />
+                          <h3 className="mt-4 text-sm font-bold leading-snug text-brand-900">
+                            {a.nama}
+                          </h3>
+                          <p className="mt-1 text-xs font-medium text-brand-600">{a.peran}</p>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 ))}
@@ -139,16 +126,16 @@ function Asatidzah() {
             </button>
           </div>
 
-          {/* Dots */}
+          {/* Dots — jumlah slide (3) */}
           <div className="mt-6 flex justify-center gap-2">
-            {Array.from({ length: maxIndex + 1 }).map((_, i) => (
+            {pages.map((_, i) => (
               <button
                 key={i}
                 type="button"
-                onClick={() => setIndex(i)}
+                onClick={() => setPage(i)}
                 aria-label={`Slide ${i + 1}`}
                 className={`h-2 rounded-full transition-all ${
-                  i === index ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+                  i === page ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
                 }`}
               />
             ))}
