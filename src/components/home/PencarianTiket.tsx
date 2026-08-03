@@ -9,10 +9,12 @@ import { Link } from 'react-router-dom'
 import Icon from '../ui/Icon'
 import SectionHeading from '../ui/SectionHeading'
 import SearchWidget from '../paket/SearchWidget'
+import PaketCardSkeleton from '../paket/PaketCardSkeleton'
 import { staggerContainer, fadeUp } from './anim'
 import { PAKET_UMRAH } from '../../data/paket'
 import type { Paket } from '../../data/paket'
 import { formatRupiah, waLink } from '../../utils/format'
+import { usePaketList } from '../../hooks/usePaket'
 
 /** Card paket umrah */
 function KartuPaket({ paket }: { paket: Paket }) {
@@ -91,6 +93,10 @@ function KartuPaket({ paket }: { paket: Paket }) {
 }
 
 function PencarianTiket() {
+  // Kartu paket dari API (fallback ke statis jika API mati)
+  const { data: daftar, loading } = usePaketList({ jenis: 'umrah' })
+  const kartu = daftar ?? PAKET_UMRAH
+
   return (
     <section className="bg-sand-100 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -112,9 +118,9 @@ function PencarianTiket() {
           initial={false}
           className="mt-10 grid grid-cols-1 gap-5 sm:mt-14 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
-          {PAKET_UMRAH.map((paket) => (
-            <KartuPaket key={paket.id} paket={paket} />
-          ))}
+          {loading
+            ? [1, 2, 3].map((i) => <PaketCardSkeleton key={i} />)
+            : kartu.map((paket) => <KartuPaket key={paket.id} paket={paket} />)}
         </motion.div>
       </div>
     </section>

@@ -6,13 +6,13 @@
  * pakai Accordion (bisa dibuka-tutup). Form pesan sticky di kanan.
  */
 import { Link, useParams, useSearchParams } from 'react-router-dom'
-import { PAKET_UMRAH, PAKET_HAJI } from '../data/paket'
 import type { PenerbanganLeg } from '../data/paket'
 import Badge from '../components/ui/Badge'
 import AccordionSection from '../components/ui/Accordion'
 import Icon from '../components/ui/Icon'
 import PesanPaketForm from '../components/paket/PesanPaketForm'
 import { formatRupiah, waLink } from '../utils/format'
+import { usePaketDetail } from '../hooks/usePaket'
 
 /** Tabel penerbangan (keberangkatan / kepulangan) */
 function PenerbanganTabel({ judul, legs }: { judul: string; legs?: PenerbanganLeg[] }) {
@@ -52,7 +52,20 @@ function PaketDetail() {
   const { slug } = useParams()
   const [searchParams] = useSearchParams()
   const tanggalParam = searchParams.get('tanggal') ?? undefined
-  const paket = [...PAKET_UMRAH, ...PAKET_HAJI].find((p) => p.id === slug)
+  const { data: paket, loading } = usePaketDetail(slug)
+
+  if (loading) {
+    return (
+      <section className="mx-auto max-w-3xl px-4 py-24 text-center">
+        <div className="animate-pulse space-y-4">
+          <div className="mx-auto h-8 w-1/2 rounded bg-gray-200" />
+          <div className="mx-auto h-4 w-2/3 rounded bg-gray-100" />
+          <div className="mx-auto h-64 w-full max-w-xl rounded-2xl bg-gray-200" />
+        </div>
+        <p className="mt-4 text-sm text-gray-400">Memuat detail paket…</p>
+      </section>
+    )
+  }
 
   if (!paket) {
     return (

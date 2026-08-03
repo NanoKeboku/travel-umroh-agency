@@ -1,38 +1,28 @@
 /**
  * Halaman: Paket Haji (listing + pencarian)
  * Route: /paket-haji
- * Sama seperti halaman Paket Umrah: widget pencarian, filter,
- * grid kartu → detail /paket-haji/:slug
+ * Data dari API (/api/paket?jenis=haji) via hook usePaketList — fallback ke statis.
+ * Sama persis pola halaman Paket Umrah (lihat PaketUmrah.tsx).
  */
 import { useSearchParams } from 'react-router-dom'
-import { PAKET_HAJI } from '../data/paket'
-import type { Paket } from '../data/paket'
 import PaketCard from '../components/paket/PaketCard'
+import PaketCardSkeleton from '../components/paket/PaketCardSkeleton'
 import SearchWidget from '../components/paket/SearchWidget'
 import FilterSidebar from '../components/paket/FilterSidebar'
 import Badge from '../components/ui/Badge'
-
-/** Cocokkan filter bulan ke jadwal keberangkatan (fallback: jadwal bulan paket) */
-function matchBulan(p: Paket, bulan: string | null): boolean {
-  if (!bulan) return true
-  if (p.keberangkatan && p.keberangkatan.length > 0) {
-    return p.keberangkatan.some((j) => j.tanggal.includes(bulan))
-  }
-  return p.jadwal.includes(bulan)
-}
-
-/** Cocokkan filter jenis ke kategori paket */
-function matchJenis(p: Paket, jenis: string | null): boolean {
-  if (!jenis) return true
-  return p.kategori === jenis
-}
+import { usePaketList } from '../hooks/usePaket'
+import { PAKET_HAJI } from '../data/paket'
 
 function PaketHaji() {
   const [searchParams, setSearchParams] = useSearchParams()
   const bulan = searchParams.get('bulan')
   const jenis = searchParams.get('jenis')
 
-  const daftar = PAKET_HAJI.filter((p) => matchBulan(p, bulan) && matchJenis(p, jenis))
+  const filters: Record<string, string> = { jenis: 'haji' }
+  if (bulan) filters.bulan = bulan
+  if (jenis) filters.kategori = jenis
+
+  const { data: daftar, loading } = usePaketList(filters)
   const pencarianAktif = Boolean(bulan || jenis)
 
   function resetPencarian() {
@@ -72,9 +62,25 @@ function PaketHaji() {
         <FilterSidebar />
 
         <div>
-          <p className="text-sm text-gray-500">Menampilkan {daftar.length} paket</p>
-
-          {daftar.length === 0 ? (
+          {loading ? (
+            <>
+              <p className="text-sm text-gray-400">Memuat data…</p>
+              <div className="mt-4 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {[1, 2, 3].map((i) => (
+                  <PaketCardSkeleton key={i} />
+                ))}
+              </div>
+            </>
+          ) : daftar && daftar.length > 0 ? (
+            <>
+              <p className="text-sm text-gray-500">Menampilkan {daftar.length} paket</p>
+              <div className="mt-4 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {daftar.map((paket) => (
+                  <PaketCard key={paket.id} paket={paket} />
+                ))}
+              </div>
+            </>
+          ) : (
             <div className="mt-8 rounded-2xl border border-dashed border-gray-200 bg-white p-12 text-center">
               <p className="text-lg font-semibold text-brand-900">
                 Tidak ada paket yang cocok
@@ -90,12 +96,6 @@ function PaketHaji() {
               >
                 Tampilkan Semua Paket
               </button>
-            </div>
-          ) : (
-            <div className="mt-4 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-              {daftar.map((paket) => (
-                <PaketCard key={paket.id} paket={paket} basePath="/paket-haji" />
-              ))}
             </div>
           )}
         </div>
