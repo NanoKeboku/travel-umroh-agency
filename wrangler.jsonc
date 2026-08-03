@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "travel-umroh-agency",
+  "compatibility_date": "2025-06-01",
+  "pages_build_output_dir": "dist",
+  "migrations_dir": "migrations",
+  "d1_databases": [
+    {
+      "binding": "ebitour_db",
+      "database_name": "ebitour-db",
+      "database_id": "2022d6cb-93db-4f57-82f5-a581f3101568"
+    }
+  ]
+}

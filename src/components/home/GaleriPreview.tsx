@@ -5,8 +5,7 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Icon from '../ui/Icon'
-import SectionHeading from '../ui/SectionHeading'
-import { staggerContainer, fadeIn, viewportOnce } from './anim'
+import { staggerContainer, fadeIn } from './anim'
 import { GALERI } from '../../data/galeri'
 
 function GaleriPreview() {
@@ -16,18 +15,13 @@ function GaleriPreview() {
   return (
     <section className="bg-brand-900 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-        >
-          <SectionHeading
-            variant="dark"
-            align="left"
-            title="Bukti Nyata Perjalanan Jamaah Kami"
-            description="Foto dan video keberangkatan jamaah Ebitour — social proof yang bisa Anda lihat langsung."
-          />
+        <motion.div variants={staggerContainer} initial={false}>
+          <h2 className="font-display text-3xl text-white sm:text-4xl">
+            Bukti Nyata Perjalanan Jamaah Kami
+          </h2>
+          <p className="mt-3 max-w-2xl text-white/80">
+            Foto dan video keberangkatan jamaah Ebitour — social proof yang bisa Anda lihat langsung.
+          </p>
         </motion.div>
 
         {/* Grid: 2 kolom mobile, 4 desktop */}

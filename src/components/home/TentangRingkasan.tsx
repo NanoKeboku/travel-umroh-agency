@@ -20,7 +20,7 @@ function TentangRingkasan() {
             <p className="text-sm font-bold uppercase tracking-wider text-sky-600">
               Tentang Kami
             </p>
-            <h2 className="mt-3 text-3xl font-extrabold leading-tight text-brand-950 sm:text-4xl">
+            <h2 className="mt-3 text-3xl leading-tight text-brand-950 sm:text-4xl">
               Perjalanan Ibadah yang Terpercaya & Berpengalaman
             </h2>
           </motion.div>

@@ -30,9 +30,9 @@ function Footer() {
         {/* Kolom 1: Profil */}
         <div>
           <Link to="/" className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
+            {/* <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
               <Icon name="kaaba" className="h-5 w-5" />
-            </span>
+            </span> */}
             <span className="text-lg font-extrabold tracking-tight">
               Ebitour<span className="text-brand-400">.</span>
             </span>
@@ -64,9 +64,9 @@ function Footer() {
 
         {/* Kolom 2: Tautan utama */}
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white/80">
+          <p className="text-sm font-bold uppercase tracking-wider text-white/80">
             Halaman
-          </h3>
+          </p>
           <ul className="mt-4 space-y-2.5">
             {LINK_UTAMA.map((l) => (
               <li key={l.to}>
@@ -83,9 +83,9 @@ function Footer() {
 
         {/* Kolom 3: Bantuan */}
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white/80">
+          <p className="text-sm font-bold uppercase tracking-wider text-white/80">
             Bantuan
-          </h3>
+          </p>
           <ul className="mt-4 space-y-2.5">
             {LINK_BANTU.map((l) => (
               <li key={l.to}>
@@ -102,9 +102,9 @@ function Footer() {
 
         {/* Kolom 4: Kontak */}
         <div>
-          <h3 className="text-sm font-bold uppercase tracking-wider text-white/80">
+          <p className="text-sm font-bold uppercase tracking-wider text-white/80">
             Hubungi Kami
-          </h3>
+          </p>
           <ul className="mt-4 space-y-3 text-sm text-white/60">
             <li className="flex items-start gap-3">
               <Icon name="mapPin" className="mt-0.5 h-4 w-4 shrink-0 text-brand-400" />

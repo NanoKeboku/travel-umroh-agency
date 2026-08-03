@@ -32,13 +32,11 @@ function Navbar() {
     location.pathname.startsWith('/paket-haji')
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `text-sm font-medium transition-colors ${
-      isActive ? 'text-brand-600' : 'text-gray-600 hover:text-brand-600'
+    `text-sm font-medium transition-colors ${isActive ? 'text-brand-600' : 'text-gray-600 hover:text-brand-600'
     }`
 
   const layananItemCls = ({ isActive }: { isActive: boolean }) =>
-    `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-      isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'
+    `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'
     }`
 
   return (
@@ -83,9 +81,9 @@ function Navbar() {
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
+            {/* <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-600 text-white">
               <Icon name="kaaba" className="h-5 w-5" />
-            </span>
+            </span> */}
             <span className="text-lg font-extrabold tracking-tight text-brand-900">
               Ebitour<span className="text-brand-500">.</span>
             </span>
@@ -107,9 +105,8 @@ function Navbar() {
                 type="button"
                 onClick={() => setLayananOpen((o) => !o)}
                 aria-expanded={layananOpen}
-                className={`flex items-center gap-1 text-sm font-medium transition-colors ${
-                  layananAktif ? 'text-brand-600' : 'text-gray-600 hover:text-brand-600'
-                }`}
+                className={`flex items-center gap-1 text-sm font-medium transition-colors ${layananAktif ? 'text-brand-600' : 'text-gray-600 hover:text-brand-600'
+                  }`}
               >
                 Layanan
                 <Icon
@@ -186,10 +183,9 @@ function Navbar() {
                     to={item.to}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                        isActive
-                          ? 'bg-brand-50 text-brand-700'
-                          : 'text-gray-600 hover:bg-gray-50'
+                      `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isActive
+                        ? 'bg-brand-50 text-brand-700'
+                        : 'text-gray-600 hover:bg-gray-50'
                       }`
                     }
                   >
@@ -204,18 +200,16 @@ function Navbar() {
                   type="button"
                   onClick={() => setLayananMobileOpen((o) => !o)}
                   aria-expanded={layananMobileOpen}
-                  className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                    layananAktif
+                  className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${layananAktif
                       ? 'bg-brand-50 text-brand-700'
                       : 'text-gray-600 hover:bg-gray-50'
-                  }`}
+                    }`}
                 >
                   Layanan
                   <Icon
                     name="chevronDown"
-                    className={`h-4 w-4 transition-transform ${
-                      layananMobileOpen ? 'rotate-180' : ''
-                    }`}
+                    className={`h-4 w-4 transition-transform ${layananMobileOpen ? 'rotate-180' : ''
+                      }`}
                   />
                 </button>
                 {layananMobileOpen && (
@@ -225,10 +219,9 @@ function Navbar() {
                         to="/paket-umrah"
                         onClick={() => setOpen(false)}
                         className={({ isActive }) =>
-                          `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                            isActive
-                              ? 'bg-brand-50 text-brand-700'
-                              : 'text-gray-600 hover:bg-gray-50'
+                          `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
+                            ? 'bg-brand-50 text-brand-700'
+                            : 'text-gray-600 hover:bg-gray-50'
                           }`
                         }
                       >
@@ -240,10 +233,9 @@ function Navbar() {
                         to="/paket-haji"
                         onClick={() => setOpen(false)}
                         className={({ isActive }) =>
-                          `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
-                            isActive
-                              ? 'bg-brand-50 text-brand-700'
-                              : 'text-gray-600 hover:bg-gray-50'
+                          `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${isActive
+                            ? 'bg-brand-50 text-brand-700'
+                            : 'text-gray-600 hover:bg-gray-50'
                           }`
                         }
                       >
@@ -260,10 +252,9 @@ function Navbar() {
                     to={item.to}
                     onClick={() => setOpen(false)}
                     className={({ isActive }) =>
-                      `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                        isActive
-                          ? 'bg-brand-50 text-brand-700'
-                          : 'text-gray-600 hover:bg-gray-50'
+                      `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${isActive
+                        ? 'bg-brand-50 text-brand-700'
+                        : 'text-gray-600 hover:bg-gray-50'
                       }`
                     }
                   >
