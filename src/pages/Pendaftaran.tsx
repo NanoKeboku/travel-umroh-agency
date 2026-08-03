@@ -12,6 +12,7 @@ import type { FormEvent } from 'react'
 import Icon from '../components/ui/Icon'
 import { PAKET_UMRAH, PAKET_HAJI } from '../data/paket'
 import { waLink } from '../utils/format'
+import { submitPendaftaran } from '../api/pendaftaranApi'
 
 const SEMUA_PAKET = [...PAKET_UMRAH, ...PAKET_HAJI]
 
@@ -32,27 +33,58 @@ function Pendaftaran() {
   const jadwalPaket = paketDipilih?.keberangkatan ?? []
   const hargaMulai = paketDipilih ? (paketDipilih.hargaQuad ?? paketDipilih.harga) : 0
 
+  const [status, setStatus] = useState<'idle' | 'mengirim' | 'sukses' | 'gagal'>('idle')
+
   function pilihPaket(id: string) {
     setPaketId(id)
     setTanggal('') // reset tanggal saat ganti paket
   }
 
-  function handleSubmit(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    const teks = [
-      'Assalamualaikum, saya ingin mendaftar paket Ebitour.',
-      '',
-      `Nama: ${nama || '-'}`,
-      `No. WhatsApp: ${whatsapp || '-'}`,
-      `Alamat: ${alamat || '-'}`,
-      `Paket: ${paketDipilih?.nama ?? '-'}`,
-      `Tanggal berangkat: ${tanggal || 'belum dipilih'}`,
-      `Jumlah jamaah: ${jumlah} pax`,
-      hargaMulai > 0 ? `Perkiraan harga mulai: Rp${hargaMulai.toLocaleString('id-ID')}/pax` : '',
-    ]
-      .filter(Boolean)
-      .join('\n')
-    window.open(waLink(teks), '_blank', 'noopener,noreferrer')
+    if (!paketDipilih || !tanggal) return
+
+    setStatus('mengirim')
+
+    const payload = {
+      paketId: paketDipilih.id,
+      paketNama: paketDipilih.nama,
+      tanggal,
+      nama,
+      whatsapp,
+      alamat,
+      jumlahPax: jumlah,
+      perkiraanHarga: hargaMulai > 0 ? hargaMulai : undefined,
+    }
+
+    try {
+      // 1) Simpan ke database via API
+      const result = await submitPendaftaran(payload)
+
+      // 2) Kalau notifikasi Fonnte belum dikonfigurasi, tetap buka WA
+      //    supaya admin tetap dapat info (fallback manual).
+      if (!result.notifikasi?.ok) {
+        const teks = [
+          'Assalamualaikum, saya ingin mendaftar paket Ebitour.',
+          '',
+          `Nama: ${nama || '-'}`,
+          `No. WhatsApp: ${whatsapp || '-'}`,
+          `Alamat: ${alamat || '-'}`,
+          `Paket: ${paketDipilih?.nama ?? '-'}`,
+          `Tanggal berangkat: ${tanggal || 'belum dipilih'}`,
+          `Jumlah jamaah: ${jumlah} pax`,
+          hargaMulai > 0 ? `Perkiraan harga mulai: Rp${hargaMulai.toLocaleString('id-ID')}/pax` : '',
+        ]
+          .filter(Boolean)
+          .join('\n')
+        window.open(waLink(teks), '_blank', 'noopener,noreferrer')
+      }
+
+      setStatus('sukses')
+    } catch (err) {
+      console.error('Pendaftaran gagal:', err)
+      setStatus('gagal')
+    }
   }
 
   return (
@@ -205,15 +237,29 @@ function Pendaftaran() {
 
           <button
             type="submit"
-            disabled={!paketDipilih || !tanggal}
+            disabled={!paketDipilih || !tanggal || status === 'mengirim'}
             className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-6 py-3.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <Icon name="whatsapp" className="h-5 w-5" />
-            Kirim Pendaftaran via WhatsApp
+            {status === 'mengirim' ? 'Mengirim…' : 'Kirim Pendaftaran'}
           </button>
+
+          {status === 'sukses' && (
+            <div className="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-center text-sm text-green-700">
+              ✓ Pendaftaran berhasil dikirim! Admin kami akan segera menghubungi
+              Anda untuk konfirmasi kuota.
+            </div>
+          )}
+          {status === 'gagal' && (
+            <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-center text-sm text-red-600">
+              Pendaftaran gagal tersimpan. Silakan coba lagi, atau hubungi kami
+              langsung via WhatsApp.
+            </div>
+          )}
+
           <p className="mt-3 text-center text-xs text-gray-400">
-            Pendaftaran dikirim ke admin untuk konfirmasi kuota. Notifikasi
-            otomatis (Fonnte) menyusul fase berikutnya.
+            Pendaftaran tersimpan di database & dikonfirmasi admin. Notifikasi
+            WhatsApp otomatis dikirim jika Fonnte dikonfigurasi.
           </p>
         </form>
       </section>
