@@ -20,6 +20,7 @@ type IconName =
   | 'calendar'
   | 'chevronLeft'
   | 'chevronRight'
+  | 'chevronDown'
   | 'quote'
   | 'menu'
   | 'close'
@@ -74,6 +75,9 @@ const PATHS: Record<IconName, React.ReactNode> = {
   ),
   chevronRight: (
     <path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+  ),
+  chevronDown: (
+    <path d="M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
   ),
   quote: (
     <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z" />

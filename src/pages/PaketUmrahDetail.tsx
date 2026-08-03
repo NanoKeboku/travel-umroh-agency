@@ -1,16 +1,52 @@
 /**
  * Halaman: Detail Paket Umrah
  * Route: /paket-umrah/:slug
- * Status: KERANGKA — struktur section sesuai blueprint
- * (FITUR-PENCARIAN-TIKET.md 3b & 3c): header, harga kamar, deskripsi,
- * spesial program, penerbangan, fasilitas, persyaratan, S&K, itinerary,
- * form pesan. Konten detail menyusul fase 2.
+ * Blueprint: FITUR-PENCARIAN-TIKET.md 3b & 3c.
+ * Menu Fasilitas / Persyaratan / Itinerary / Penerbangan / S&K
+ * pakai Accordion (bisa dibuka-tutup). Form pesan sticky di kanan.
  */
 import { Link, useParams } from 'react-router-dom'
 import { PAKET_UMRAH, PAKET_HAJI } from '../data/paket'
+import type { PenerbanganLeg } from '../data/paket'
 import Badge from '../components/ui/Badge'
+import AccordionSection from '../components/ui/Accordion'
+import Icon from '../components/ui/Icon'
 import PesanPaketForm from '../components/paket/PesanPaketForm'
-import { formatRupiah } from '../utils/format'
+import { formatRupiah, waLink } from '../utils/format'
+
+/** Tabel penerbangan (keberangkatan / kepulangan) */
+function PenerbanganTabel({ judul, legs }: { judul: string; legs?: PenerbanganLeg[] }) {
+  if (!legs || legs.length === 0) {
+    return <p className="text-sm text-gray-400">KERANGKA — data penerbangan menyusul</p>
+  }
+  return (
+    <div>
+      <h3 className="text-sm font-semibold text-gray-700">{judul}</h3>
+      <div className="mt-2 overflow-x-auto">
+        <table className="w-full min-w-[480px] text-sm">
+          <thead>
+            <tr className="border-b border-gray-100 text-left text-xs uppercase text-gray-400">
+              <th className="py-2 pr-4">Kode</th>
+              <th className="py-2 pr-4">Tanggal</th>
+              <th className="py-2 pr-4">Pergi</th>
+              <th className="py-2">Tiba</th>
+            </tr>
+          </thead>
+          <tbody>
+            {legs.map((leg) => (
+              <tr key={leg.kode} className="border-b border-gray-50">
+                <td className="py-2 pr-4 font-semibold text-brand-700">{leg.kode}</td>
+                <td className="py-2 pr-4 text-gray-600">{leg.tanggal}</td>
+                <td className="py-2 pr-4 text-gray-600">{leg.pergi}</td>
+                <td className="py-2 text-gray-600">{leg.tiba}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
 
 function PaketUmrahDetail() {
   const { slug } = useParams()
@@ -63,11 +99,13 @@ function PaketUmrahDetail() {
           <div className="flex flex-wrap gap-2">
             <Badge>{paket.durasi}</Badge>
             <Badge>{paket.jadwal}</Badge>
-            <Badge className="bg-sand-200 text-brand-900">{paket.jenis === 'umrah' ? 'Umrah' : 'Haji'}</Badge>
+            <Badge className="bg-sand-200 text-brand-900">
+              {paket.jenis === 'umrah' ? 'Umrah' : 'Haji'}
+            </Badge>
+            {paket.maskapai && <Badge className="bg-brand-50 text-brand-700">{paket.maskapai}</Badge>}
           </div>
           <h1 className="mt-3 text-3xl font-bold text-brand-900">{paket.nama}</h1>
-          <p className="mt-2 text-gray-500">{paket.maskapai}</p>
-          <p className="mt-1 text-sm text-gray-400">{paket.hotel}</p>
+          <p className="mt-2 text-gray-500">{paket.hotel}</p>
 
           <div className="mt-6">
             <p className="text-sm text-gray-500">Harga mulai</p>
@@ -82,77 +120,123 @@ function PaketUmrahDetail() {
           </div>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link
-              to="#pesan"
+            <a
+              href="#pesan"
               className="rounded-lg bg-brand-600 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
             >
               Pesan Sekarang
-            </Link>
-            <a
-              href="#"
-              className="rounded-lg border border-brand-600 px-6 py-3 text-sm font-semibold text-brand-600 transition-colors hover:bg-brand-50"
-            >
-              Hubungi Kami
             </a>
+            <a
+              href={waLink(`Assalamualaikum, saya ingin konsultasi paket ${paket.nama}`)}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-1.5 rounded-lg border border-brand-600 px-6 py-3 text-sm font-semibold text-brand-600 transition-colors hover:bg-brand-50"
+            >
+              <Icon name="whatsapp" className="h-4 w-4" /> Konsultasi Paket
+            </a>
+            {paket.brosurUrl ? (
+              <a
+                href={paket.brosurUrl}
+                download
+                className="flex items-center gap-1.5 rounded-lg border border-brand-600 px-6 py-3 text-sm font-semibold text-brand-600 transition-colors hover:bg-brand-50"
+              >
+                <Icon name="download" className="h-4 w-4" /> Download Brosur
+              </a>
+            ) : (
+              <a
+                href={waLink(`Assalamualaikum, mohon kirimkan brosur ${paket.nama}`)}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-1.5 rounded-lg border border-brand-600 px-6 py-3 text-sm font-semibold text-brand-600 transition-colors hover:bg-brand-50"
+              >
+                <Icon name="download" className="h-4 w-4" /> Minta Brosur
+              </a>
+            )}
           </div>
         </div>
       </header>
 
-      {/* Harga per kamar (blueprint 3c — form pesan) */}
+      {/* Detail: menu buka-tutup + form pesan */}
       <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_380px]">
-        <div className="space-y-8">
-          {/* Fasilitas */}
-          <section className="rounded-2xl bg-white p-6 shadow-soft">
-            <h2 className="text-xl font-bold text-brand-900">Fasilitas Termasuk</h2>
-            <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+        <div className="space-y-4">
+          <AccordionSection title="Fasilitas Termasuk" defaultOpen>
+            <ul className="grid gap-2 sm:grid-cols-2">
               {paket.fasilitas.map((f) => (
                 <li key={f} className="flex items-start gap-2 text-sm text-gray-600">
-                  <span className="mt-0.5 text-brand-600">✓</span>
+                  <Icon name="check" className="mt-0.5 h-4 w-4 shrink-0 text-brand-600" />
                   {f}
                 </li>
               ))}
             </ul>
-          </section>
+          </AccordionSection>
 
-          {/* Persyaratan */}
-          <section className="rounded-2xl bg-white p-6 shadow-soft">
-            <h2 className="text-xl font-bold text-brand-900">Persyaratan Peserta</h2>
-            <ul className="mt-4 grid gap-2">
+          <AccordionSection title="Persyaratan Peserta">
+            <ul className="grid gap-2 sm:grid-cols-2">
               {paket.persyaratan.map((p) => (
                 <li key={p} className="flex items-start gap-2 text-sm text-gray-600">
-                  <span className="mt-0.5 text-brand-600">•</span>
+                  <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
                   {p}
                 </li>
               ))}
             </ul>
-          </section>
+          </AccordionSection>
 
-          {/* Itinerary */}
-          <section className="rounded-2xl bg-white p-6 shadow-soft">
-            <h2 className="text-xl font-bold text-brand-900">Rencana Perjalanan</h2>
-            <p className="mt-2 text-sm text-gray-400">
-              KERANGKA — timeline itinerary per hari menyusul fase 2
-              (blueprint: Hari Ke-N, rute/lokasi, deskripsi kegiatan).
-            </p>
-          </section>
+          <AccordionSection title="Rencana Perjalanan (Itinerary)">
+            {paket.itinerary && paket.itinerary.length > 0 ? (
+              <ol className="space-y-4">
+                {paket.itinerary.map((h) => (
+                  <li key={h.hari} className="flex gap-3">
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-brand-100 text-sm font-bold text-brand-700">
+                      {h.hari}
+                    </span>
+                    <div>
+                      <p className="text-sm font-semibold text-gray-800">
+                        Hari Ke-{h.hari} · {h.rute}
+                      </p>
+                      <p className="mt-1 text-sm text-gray-500">{h.deskripsi}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p className="text-sm text-gray-400">
+                KERANGKA — timeline itinerary per hari menyusul fase 2.
+              </p>
+            )}
+          </AccordionSection>
 
-          {/* Informasi penerbangan */}
-          <section className="rounded-2xl bg-white p-6 shadow-soft">
-            <h2 className="text-xl font-bold text-brand-900">Informasi Penerbangan</h2>
-            <p className="mt-2 text-sm text-gray-400">
-              KERANGKA — tabel keberangkatan &amp; kepulangan (kode pesawat,
-              jam pergi/tiba, bandara) menyusul fase 2.
-            </p>
-          </section>
+          <AccordionSection title="Informasi Penerbangan">
+            {paket.penerbangan ? (
+              <div className="space-y-5">
+                <PenerbanganTabel
+                  judul="Keberangkatan"
+                  legs={paket.penerbangan.keberangkatan}
+                />
+                <PenerbanganTabel judul="Kepulangan" legs={paket.penerbangan.kepulangan} />
+              </div>
+            ) : (
+              <p className="text-sm text-gray-400">
+                KERANGKA — tabel penerbangan menyusul fase 2.
+              </p>
+            )}
+          </AccordionSection>
 
-          {/* Syarat & ketentuan */}
-          <section className="rounded-2xl bg-white p-6 shadow-soft">
-            <h2 className="text-xl font-bold text-brand-900">Syarat &amp; Ketentuan</h2>
-            <p className="mt-2 text-sm text-gray-400">
-              KERANGKA — kebijakan pembatalan, penjadwalan ulang, aturan
-              Nusuk (1 paspor = 1 bed), dsb. menyusul fase 2.
-            </p>
-          </section>
+          <AccordionSection title="Syarat & Ketentuan">
+            {paket.sk && paket.sk.length > 0 ? (
+              <ul className="space-y-2">
+                {paket.sk.map((s) => (
+                  <li key={s} className="flex items-start gap-2 text-sm text-gray-600">
+                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-sm text-gray-400">
+                KERANGKA — kebijakan pembatalan, reschedule, aturan Nusuk, dsb. menyusul.
+              </p>
+            )}
+          </AccordionSection>
         </div>
 
         {/* Form pesan paket (sticky di desktop) */}
