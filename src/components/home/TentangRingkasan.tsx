@@ -78,7 +78,7 @@ function TentangRingkasan() {
             </motion.div>
           </motion.div>
 
-          {/* Panel visual (placeholder) */}
+          {/* Panel visual — foto Masjidil Haram (Wikimedia Commons) */}
           <motion.div
             variants={fadeIn}
             initial="hidden"
@@ -86,22 +86,13 @@ function TentangRingkasan() {
             viewport={viewportOnce}
             className="relative"
           >
-            <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 shadow-xl">
-              <div
-                aria-hidden="true"
-                className="flex aspect-[4/3] items-center justify-center"
-              >
-                {/* Placeholder: ganti dengan foto asli (src/assets/images) */}
-                <div className="text-center">
-                  <Icon name="kaaba" className="mx-auto h-20 w-20 text-sand-200" />
-                  <p className="mt-4 text-sm font-medium text-white/70">
-                    Foto Perusahaan
-                  </p>
-                  <p className="mt-1 text-xs text-white/40">
-                    ganti dengan gambar asli di src/assets/images/
-                  </p>
-                </div>
-              </div>
+            <div className="overflow-hidden rounded-2xl shadow-xl ring-1 ring-gray-100">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Kaaba%2C_Makkah3.jpg/960px-Kaaba%2C_Makkah3.jpg"
+                alt="Masjidil Haram & Kabah"
+                loading="lazy"
+                className="aspect-[4/3] w-full object-cover"
+              />
             </div>
             {/* Kartu melayang — di dalam panel di mobile, melayang keluar di sm+ */}
             <div className="absolute -bottom-5 left-3 rounded-xl bg-white p-3 shadow-lg ring-1 ring-gray-100 sm:-left-6 sm:bottom-6 sm:p-4">
