@@ -14,6 +14,8 @@ import { formatRupiah, waLink } from '../../utils/format'
 
 interface PesanPaketFormProps {
   paket: Paket
+  /** Tanggal yang sudah terpilih (mis. dari kartu voucher: ?tanggal=...) */
+  initialTanggal?: string
 }
 
 const KAMAR = [
@@ -27,7 +29,7 @@ type KamarKey = (typeof KAMAR)[number]['key']
 const SELECT_CLS =
   'w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 focus:border-brand-500 focus:outline-none'
 
-function PesanPaketForm({ paket }: PesanPaketFormProps) {
+function PesanPaketForm({ paket, initialTanggal }: PesanPaketFormProps) {
   const durasiList = paket.durasiList ?? [paket.durasi]
   const bandaraList = paket.bandara ?? ['Soekarno-Hatta (CGK)']
   const jadwalList = paket.keberangkatan ?? []
@@ -35,7 +37,12 @@ function PesanPaketForm({ paket }: PesanPaketFormProps) {
 
   const [programHari, setProgramHari] = useState(durasiList[0])
   const [bandara, setBandara] = useState(bandaraList[0])
-  const [tanggal, setTanggal] = useState(jadwalList[0]?.tanggal ?? '')
+  const [tanggal, setTanggal] = useState(
+    () =>
+      jadwalList.find((j) => j.tanggal === initialTanggal)?.tanggal ??
+      jadwalList[0]?.tanggal ??
+      '',
+  )
   const [tambahan, setTambahan] = useState(tambahanList[0]?.label ?? 'Tanpa Tiket Domestik')
   const [jumlah, setJumlah] = useState<Record<KamarKey, number>>({
     hargaQuad: 0,

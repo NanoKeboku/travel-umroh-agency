@@ -5,7 +5,7 @@
  * Menu Fasilitas / Persyaratan / Itinerary / Penerbangan / S&K
  * pakai Accordion (bisa dibuka-tutup). Form pesan sticky di kanan.
  */
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { PAKET_UMRAH, PAKET_HAJI } from '../data/paket'
 import type { PenerbanganLeg } from '../data/paket'
 import Badge from '../components/ui/Badge'
@@ -50,6 +50,8 @@ function PenerbanganTabel({ judul, legs }: { judul: string; legs?: PenerbanganLe
 
 function PaketUmrahDetail() {
   const { slug } = useParams()
+  const [searchParams] = useSearchParams()
+  const tanggalParam = searchParams.get('tanggal') ?? undefined
   const paket = [...PAKET_UMRAH, ...PAKET_HAJI].find((p) => p.id === slug)
 
   if (!paket) {
@@ -241,7 +243,7 @@ function PaketUmrahDetail() {
 
         {/* Form pesan paket (sticky di desktop) */}
         <div id="pesan" className="lg:sticky lg:top-24 lg:self-start">
-          <PesanPaketForm paket={paket} />
+          <PesanPaketForm paket={paket} initialTanggal={tanggalParam} />
         </div>
       </div>
     </section>

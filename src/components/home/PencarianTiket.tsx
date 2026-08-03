@@ -7,6 +7,7 @@
 import { motion } from 'framer-motion'
 import SectionHeading from '../ui/SectionHeading'
 import SearchWidget from '../paket/SearchWidget'
+import TiketTerbaru from './TiketTerbaru'
 import { staggerContainer, fadeUp, viewportOnce } from './anim'
 import { PAKET_UMRAH } from '../../data/paket'
 
@@ -35,6 +36,9 @@ function PencarianTiket() {
         >
           <SearchWidget paket={PAKET_UMRAH} />
         </motion.div>
+
+        {/* Kartu tiket terbaru (voucher) — 3 jadwal terdekat */}
+        <TiketTerbaru />
       </div>
     </section>
   )
