@@ -1,6 +1,6 @@
 /**
- * Halaman: Detail Paket Umrah
- * Route: /paket-umrah/:slug
+ * Halaman: Detail Paket (Umrah & Haji)
+ * Route: /paket-umrah/:slug dan /paket-haji/:slug
  * Blueprint: FITUR-PENCARIAN-TIKET.md 3b & 3c.
  * Menu Fasilitas / Persyaratan / Itinerary / Penerbangan / S&K
  * pakai Accordion (bisa dibuka-tutup). Form pesan sticky di kanan.
@@ -48,7 +48,7 @@ function PenerbanganTabel({ judul, legs }: { judul: string; legs?: PenerbanganLe
   )
 }
 
-function PaketUmrahDetail() {
+function PaketDetail() {
   const { slug } = useParams()
   const [searchParams] = useSearchParams()
   const tanggalParam = searchParams.get('tanggal') ?? undefined
@@ -72,6 +72,8 @@ function PaketUmrahDetail() {
   }
 
   const hargaMulai = paket.hargaQuad ?? paket.harga
+  const basePath = paket.jenis === 'haji' ? '/paket-haji' : '/paket-umrah'
+  const labelJenis = paket.jenis === 'haji' ? 'Haji' : 'Umrah'
 
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
@@ -81,7 +83,7 @@ function PaketUmrahDetail() {
           Beranda
         </Link>
         {' / '}
-        <Link to={paket.jenis === 'haji' ? '/paket-haji' : '/paket-umrah'} className="hover:text-brand-600">
+        <Link to={basePath} className="hover:text-brand-600">
           {paket.jenis === 'haji' ? 'Paket Haji' : 'Paket Umrah'}
         </Link>
         {' / '}
@@ -101,9 +103,7 @@ function PaketUmrahDetail() {
           <div className="flex flex-wrap gap-2">
             <Badge>{paket.durasi}</Badge>
             <Badge>{paket.jadwal}</Badge>
-            <Badge className="bg-sand-200 text-brand-900">
-              {paket.jenis === 'umrah' ? 'Umrah' : 'Haji'}
-            </Badge>
+            <Badge className="bg-sand-200 text-brand-900">{labelJenis}</Badge>
             {paket.maskapai && <Badge className="bg-brand-50 text-brand-700">{paket.maskapai}</Badge>}
           </div>
           <h1 className="mt-3 text-3xl font-bold text-brand-900">{paket.nama}</h1>
@@ -250,4 +250,4 @@ function PaketUmrahDetail() {
   )
 }
 
-export default PaketUmrahDetail
+export default PaketDetail

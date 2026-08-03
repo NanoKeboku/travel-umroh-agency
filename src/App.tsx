@@ -9,7 +9,7 @@ import Layout from './components/layout/Layout'
 import Home from './pages/Home'
 import About from './pages/About'
 import PaketUmrah from './pages/PaketUmrah'
-import PaketUmrahDetail from './pages/PaketUmrahDetail'
+import PaketDetail from './pages/PaketDetail'
 import PaketHaji from './pages/PaketHaji'
 import Pembimbing from './pages/Pembimbing'
 import Muthawif from './pages/Muthawif'
@@ -31,8 +31,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/tentang" element={<About />} />
           <Route path="/paket-umrah" element={<PaketUmrah />} />
-          <Route path="/paket-umrah/:slug" element={<PaketUmrahDetail />} />
+          <Route path="/paket-umrah/:slug" element={<PaketDetail />} />
           <Route path="/paket-haji" element={<PaketHaji />} />
+          <Route path="/paket-haji/:slug" element={<PaketDetail />} />
           <Route path="/pembimbing" element={<Pembimbing />} />
           <Route path="/muthawif" element={<Muthawif />} />
           <Route path="/dokumentasi" element={<Dokumentasi />} />

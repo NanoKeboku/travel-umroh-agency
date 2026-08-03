@@ -1,14 +1,17 @@
 /**
- * PaketUnggulan — pilihan paket di Beranda dengan filter tab Umrah/Haji
- * Menampilkan beberapa kartu ("menampilkan sedikit").
- * Klik kartu paket umrah → halaman tiket detail (/paket-umrah/:slug).
- * Tab Haji → kartu haji (mengarah ke halaman /paket-haji).
+ * PaketUnggulan — section gabungan di Beranda (satu section utuh):
+ *   1. "Temukan Jadwal Keberangkatan Anda"  → widget pencarian
+ *   2. Kartu tiket terbaru (voucher)         → 3 jadwal terdekat
+ *   3. "Pilihan Paket Terbaik Kami"          → tab Umrah/Haji + kartu
+ * Klik kartu umrah → /paket-umrah/:slug, kartu haji → /paket-haji/:slug.
  */
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Icon from '../ui/Icon'
 import SectionHeading from '../ui/SectionHeading'
+import SearchWidget from '../paket/SearchWidget'
+import TiketTerbaru from './TiketTerbaru'
 import { staggerContainer, fadeUp, viewportOnce } from './anim'
 import { PAKET_UMRAH, PAKET_HAJI } from '../../data/paket'
 import type { Paket } from '../../data/paket'
@@ -24,15 +27,14 @@ const TAB_CLS = {
 
 function KartuPaket({ paket, tab }: { paket: Paket; tab: Tab }) {
   const isHaji = tab === 'haji'
-  // Umrah → halaman tiket detail; Haji → halaman paket haji
-  const target = isHaji ? '/paket-haji' : `/paket-umrah/${paket.id}`
+  const target = isHaji ? `/paket-haji/${paket.id}` : `/paket-umrah/${paket.id}`
 
   return (
     <motion.article
       variants={fadeUp}
       className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-gray-100 transition-all hover:-translate-y-1.5 hover:shadow-xl"
     >
-      {/* Gambar — klik → halaman tiket */}
+      {/* Gambar — klik → halaman detail */}
       <Link to={target} className="relative block aspect-[16/10] overflow-hidden">
         <img
           src={paket.gambar}
@@ -83,7 +85,7 @@ function KartuPaket({ paket, tab }: { paket: Paket; tab: Tab }) {
             to={target}
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
           >
-            {isHaji ? 'Lihat Halaman Haji' : 'Lihat Tiket'}
+            {isHaji ? 'Lihat Detail' : 'Lihat Tiket'}
             <Icon name="arrowRight" className="h-4 w-4" />
           </Link>
           <a
@@ -110,6 +112,7 @@ function PaketUnggulan() {
   return (
     <section className="bg-sand-100 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        {/* ===== 1. Cari tiket ===== */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -117,61 +120,88 @@ function PaketUnggulan() {
           viewport={viewportOnce}
         >
           <SectionHeading
-            eyebrow="Paket Kami"
-            title="Pilihan Paket Terbaik Kami"
-            description="Harga transparan, fasilitas jelas. Pilih paket yang sesuai kebutuhan Anda."
+            eyebrow="Cari Tiket"
+            title="Temukan Jadwal Keberangkatan Anda"
+            description="Pilih bulan keberangkatan dan jenis paket untuk melihat tiket umroh yang tersedia."
           />
-
-          {/* Filter tab: Umrah / Haji */}
-          <div className="mt-8 flex justify-center">
-            <div className="inline-flex rounded-full bg-white p-1 shadow-soft ring-1 ring-gray-100">
-              {(['umrah', 'haji'] as const).map((t) => (
-                <button
-                  key={t}
-                  type="button"
-                  onClick={() => setTab(t)}
-                  className={`${TAB_CLS.base} ${
-                    tab === t ? TAB_CLS.aktif : TAB_CLS.idle
-                  }`}
-                >
-                  {t === 'umrah' ? 'Paket Umrah' : 'Paket Haji'}
-                </button>
-              ))}
-            </div>
-          </div>
         </motion.div>
 
-        {/* Grid kartu — 1 kolom mobile, 2 tablet, 3 desktop
-            key={tab} → remount saat ganti tab, biar animasi whileInView
-            jalan ulang (tanpa ini kartu baru tak muncul: bug viewportOnce) */}
         <motion.div
-          key={tab}
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-          className="mt-10 grid grid-cols-1 gap-5 sm:mt-14 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
-        >
-          {daftar.map((paket) => (
-            <KartuPaket key={paket.id} paket={paket} tab={tab} />
-          ))}
-        </motion.div>
-
-        <motion.p
           variants={fadeUp}
           initial="hidden"
           whileInView="show"
           viewport={viewportOnce}
-          className="mt-8 text-center sm:mt-10"
+          className="mx-auto mt-8 max-w-4xl"
         >
-          <Link
-            to={linkSemua}
-            className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
+          <SearchWidget paket={PAKET_UMRAH} />
+        </motion.div>
+
+        {/* Kartu tiket terbaru (voucher) — 3 jadwal terdekat */}
+        <TiketTerbaru />
+
+        {/* ===== 2. Pilihan paket terbaik ===== */}
+        <div className="mt-16 sm:mt-20">
+          <motion.div
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
           >
-            {labelSemua}
-            <Icon name="arrowRight" className="h-4 w-4" />
-          </Link>
-        </motion.p>
+            <SectionHeading
+              eyebrow="Paket Kami"
+              title="Pilihan Paket Terbaik Kami"
+              description="Harga transparan, fasilitas jelas. Pilih paket yang sesuai kebutuhan Anda."
+            />
+
+            {/* Filter tab: Umrah / Haji */}
+            <div className="mt-8 flex justify-center">
+              <div className="inline-flex rounded-full bg-white p-1 shadow-soft ring-1 ring-gray-100">
+                {(['umrah', 'haji'] as const).map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTab(t)}
+                    className={`${TAB_CLS.base} ${
+                      tab === t ? TAB_CLS.aktif : TAB_CLS.idle
+                    }`}
+                  >
+                    {t === 'umrah' ? 'Paket Umrah' : 'Paket Haji'}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Grid kartu — key={tab} biar animasi jalan ulang saat ganti tab */}
+          <motion.div
+            key={tab}
+            variants={staggerContainer}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
+            className="mt-10 grid grid-cols-1 gap-5 sm:mt-14 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {daftar.map((paket) => (
+              <KartuPaket key={paket.id} paket={paket} tab={tab} />
+            ))}
+          </motion.div>
+
+          <motion.p
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
+            className="mt-8 text-center sm:mt-10"
+          >
+            <Link
+              to={linkSemua}
+              className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
+            >
+              {labelSemua}
+              <Icon name="arrowRight" className="h-4 w-4" />
+            </Link>
+          </motion.p>
+        </div>
       </div>
     </section>
   )

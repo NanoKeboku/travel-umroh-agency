@@ -11,14 +11,16 @@ import { formatRupiah } from '../../utils/format'
 
 interface PaketCardProps {
   paket: Paket
+  /** Prefix route detail: '/paket-umrah' (default) atau '/paket-haji' */
+  basePath?: string
 }
 
-function PaketCard({ paket }: PaketCardProps) {
+function PaketCard({ paket, basePath = '/paket-umrah' }: PaketCardProps) {
   const hargaMulai = paket.hargaQuad ?? paket.harga
 
   return (
     <article className="group overflow-hidden rounded-2xl bg-white shadow-soft transition-shadow hover:shadow-lg">
-      <Link to={`/paket-umrah/${paket.id}`} className="block">
+      <Link to={`${basePath}/${paket.id}`} className="block">
         <div className="relative aspect-[4/3] overflow-hidden bg-brand-100">
           <img
             src={paket.gambar}

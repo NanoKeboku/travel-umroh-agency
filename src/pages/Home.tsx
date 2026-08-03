@@ -6,7 +6,6 @@
  */
 import Hero from '../components/home/Hero'
 import TentangRingkasan from '../components/home/TentangRingkasan'
-import PencarianTiket from '../components/home/PencarianTiket'
 import PaketUnggulan from '../components/home/PaketUnggulan'
 import Keunggulan from '../components/home/Keunggulan'
 import GaleriPreview from '../components/home/GaleriPreview'
@@ -18,7 +17,6 @@ function Home() {
     <>
       <Hero />
       <TentangRingkasan />
-      <PencarianTiket />
       <PaketUnggulan />
       <Keunggulan />
       <GaleriPreview />
