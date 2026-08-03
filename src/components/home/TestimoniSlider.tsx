@@ -28,7 +28,6 @@ function TestimoniSlider() {
           viewport={viewportOnce}
         >
           <SectionHeading
-            eyebrow="Testimoni"
             title="Kata Mereka yang Telah Berangkat"
             description="Pengalaman nyata jamaah Ebitour dalam perjalanan ibadahnya."
           />
@@ -37,9 +36,7 @@ function TestimoniSlider() {
         {/* Slider */}
         <motion.div
           variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="relative mt-12"
         >
           <div className="relative overflow-hidden rounded-2xl bg-white p-8 shadow-soft ring-1 ring-gray-100 sm:p-10">
@@ -106,7 +103,7 @@ function TestimoniSlider() {
                   type="button"
                   aria-label={`Testimoni ${i + 1}`}
                   onClick={() => setIndex(i)}
-                  className={`h-2 rounded-full transition-all ${
+                  className={`h-2 rounded-full transition-[width,background-color] ${
                     i === index ? 'w-6 bg-brand-600' : 'w-2 bg-gray-300'
                   }`}
                 />

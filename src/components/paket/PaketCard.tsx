@@ -28,7 +28,7 @@ function PaketCard({ paket }: PaketCardProps) {
             src={paket.gambar}
             alt={paket.nama}
             loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+            className="h-full w-full object-cover"
           />
           <Badge className="absolute left-3 top-3 bg-white/90 text-brand-800">
             {paket.durasi}

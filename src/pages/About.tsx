@@ -10,7 +10,7 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Icon from '../components/ui/Icon'
 import type { IconName } from '../components/ui/Icon'
-import { staggerContainer, fadeUp, fadeIn, viewportOnce } from '../components/home/anim'
+import { staggerContainer, fadeUp, fadeIn } from '../components/home/anim'
 import { waLink } from '../utils/format'
 
 const GAMBAR_KABAH =
@@ -81,10 +81,7 @@ function About() {
       {/* ===== Header halaman ===== */}
       <section className="bg-brand-950 py-16 text-center sm:py-20">
         <div className="mx-auto max-w-3xl px-4">
-          <p className="text-xs font-semibold uppercase tracking-wider text-brand-300">
-            Tentang Kami
-          </p>
-          <h1 className="mt-3 font-display text-3xl text-white sm:text-4xl">
+          <h1 className="font-display text-3xl text-white sm:text-4xl">
             Travel Umrah Ebitour Purworejo
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm text-white/70 sm:text-base">
@@ -99,9 +96,7 @@ function About() {
         <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
           <motion.div
             variants={fadeIn}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="relative"
           >
             <img
@@ -118,13 +113,8 @@ function About() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
           >
-            <motion.p variants={fadeUp} className="text-sm font-bold uppercase tracking-wider text-brand-500">
-              Profil Perusahaan
-            </motion.p>
             <motion.h2 variants={fadeUp} className="mt-3 font-display text-3xl text-brand-950 sm:text-4xl">
               Berangkat dengan Tenang, Ibadah dengan Khusyuk
             </motion.h2>
@@ -163,9 +153,7 @@ function About() {
         <div className="mt-20 grid gap-6 lg:grid-cols-2">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="rounded-2xl bg-white p-8 shadow-soft ring-1 ring-gray-100"
           >
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
@@ -181,9 +169,7 @@ function About() {
 
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="rounded-2xl bg-white p-8 shadow-soft ring-1 ring-gray-100"
           >
             <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-100 text-brand-600">
@@ -211,14 +197,9 @@ function About() {
         <div className="mt-20">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="mx-auto max-w-2xl text-center"
           >
-            <p className="text-sm font-bold uppercase tracking-wider text-brand-500">
-              Nilai Kami
-            </p>
             <h2 className="mt-3 text-3xl font-extrabold text-brand-950">
               Prinsip yang Menjadi Pegangan
             </h2>
@@ -226,16 +207,14 @@ function About() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4"
           >
             {NILAI.map((n) => (
               <motion.div
                 key={n.judul}
                 variants={fadeUp}
-                className="group rounded-2xl bg-white p-6 text-center shadow-soft ring-1 ring-gray-100 transition-all hover:-translate-y-1 hover:shadow-lg"
+                className="group rounded-2xl bg-white p-6 text-center shadow-soft ring-1 ring-gray-100 transition hover:shadow-lg"
               >
                 <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-100 text-brand-600 transition-colors group-hover:bg-brand-600 group-hover:text-white">
                   <Icon name={n.ikon} className="h-7 w-7" />
@@ -250,9 +229,7 @@ function About() {
         {/* ===== Statistik ===== */}
         <motion.div
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="mt-20 grid grid-cols-2 gap-5 rounded-2xl bg-brand-950 p-8 sm:p-10 lg:grid-cols-4"
         >
           {STATISTIK.map((s) => (
@@ -267,14 +244,9 @@ function About() {
         <div className="mt-20">
           <motion.div
             variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="mx-auto max-w-2xl text-center"
           >
-            <p className="text-sm font-bold uppercase tracking-wider text-brand-500">
-              Tim Kami
-            </p>
             <h2 className="mt-3 text-3xl font-extrabold text-brand-950">
               Pembimbing yang Mendampingi Anda
             </h2>
@@ -286,9 +258,7 @@ function About() {
 
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
           >
             {TIM.map((t) => (
@@ -313,9 +283,7 @@ function About() {
         {/* ===== Legalitas ===== */}
         <motion.div
           variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="mt-20 rounded-2xl bg-sand-100 p-8 sm:p-10"
         >
           <div className="flex flex-col items-center gap-6 lg:flex-row lg:justify-between">
@@ -350,9 +318,7 @@ function About() {
             <motion.img
               key={g.alt}
               variants={fadeIn}
-              initial="hidden"
-              whileInView="show"
-              viewport={viewportOnce}
+              initial={false}
               src={g.src}
               alt={g.alt}
               loading="lazy"
@@ -366,9 +332,7 @@ function About() {
         {/* ===== CTA ===== */}
         <motion.div
           variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="mt-20 rounded-2xl bg-gradient-to-br from-brand-700 to-brand-900 p-10 text-center sm:p-14"
         >
           <h2 className="text-2xl font-extrabold text-white sm:text-3xl">

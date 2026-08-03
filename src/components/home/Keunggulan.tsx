@@ -43,7 +43,6 @@ function Keunggulan() {
           viewport={viewportOnce}
         >
           <SectionHeading
-            eyebrow="Kenapa Ebitour"
             title="Perjalanan Ibadah yang Tenang & Bermakna"
             description="Kepercayaan calon jamaah adalah prioritas kami."
           />
@@ -51,9 +50,7 @@ function Keunggulan() {
 
         <motion.div
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="mt-12 grid gap-5 sm:grid-cols-2"
         >
           {KEUNGGULAN.map((k, i) => (

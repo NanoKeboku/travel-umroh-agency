@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import Icon from '../ui/Icon'
 import SectionHeading from '../ui/SectionHeading'
 import SearchWidget from '../paket/SearchWidget'
-import { staggerContainer, fadeUp, viewportOnce } from './anim'
+import { staggerContainer, fadeUp } from './anim'
 import { PAKET_UMRAH } from '../../data/paket'
 import type { Paket } from '../../data/paket'
 import { formatRupiah, waLink } from '../../utils/format'
@@ -21,14 +21,14 @@ function KartuPaket({ paket }: { paket: Paket }) {
   return (
     <motion.article
       variants={fadeUp}
-      className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-gray-100 transition-all hover:-translate-y-1.5 hover:shadow-xl"
+      className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-gray-100 transition hover:shadow-xl"
     >
       <Link to={target} className="relative block aspect-[16/10] overflow-hidden">
         <img
           src={paket.gambar}
           alt={paket.nama}
           loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
         <span className="absolute left-3 top-3 rounded-full bg-white/90 px-3 py-1 text-xs font-bold text-brand-800 shadow backdrop-blur">
@@ -95,34 +95,20 @@ function PencarianTiket() {
     <section className="bg-sand-100 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Pencarian tiket */}
-        <motion.div
-          variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-        >
+        <motion.div variants={staggerContainer} initial={false}>
           <SectionHeading
-            eyebrow="Cari Tiket"
             title="Temukan Jadwal Keberangkatan Anda"
             description="Pilih bulan keberangkatan dan jenis paket untuk melihat tiket umroh yang tersedia."
           />
         </motion.div>
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-          className="mx-auto mt-8 max-w-4xl"
-        >
+        <motion.div variants={fadeUp} initial={false} className="mx-auto mt-8 max-w-4xl">
           <SearchWidget paket={PAKET_UMRAH} />
         </motion.div>
 
         {/* Card paket umrah */}
         <motion.div
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="mt-10 grid grid-cols-1 gap-5 sm:mt-14 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
         >
           {PAKET_UMRAH.map((paket) => (

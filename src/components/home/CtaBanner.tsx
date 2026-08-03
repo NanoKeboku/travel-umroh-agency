@@ -4,7 +4,7 @@
  */
 import { motion } from 'framer-motion'
 import Icon from '../ui/Icon'
-import { staggerContainer, fadeUp, viewportOnce } from './anim'
+import { staggerContainer, fadeUp } from './anim'
 import { KONTAK } from '../../data/kontak'
 import { waLink } from '../../utils/format'
 
@@ -14,24 +14,12 @@ function CtaBanner() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-800 via-brand-700 to-brand-600 px-6 py-14 text-center shadow-xl sm:px-12"
         >
-          {/* dekorasi */}
-          <div
-            aria-hidden="true"
-            className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-sand-200/15 blur-2xl"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute -bottom-12 -left-12 h-56 w-56 rounded-full bg-white/10 blur-2xl"
-          />
-
           <motion.p
             variants={fadeUp}
-            className="relative text-2xl font-extrabold text-white sm:text-4xl text-white/90"
+            className="relative font-display text-2xl text-white sm:text-4xl"
           >
             Siap Menunaikan Ibadah Umrah?
           </motion.p>
@@ -51,7 +39,7 @@ function CtaBanner() {
               href={waLink('Assalamualaikum, saya ingin mendaftar paket umrah Ebitour')}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3.5 text-sm font-bold text-brand-800 shadow-lg transition-all hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3.5 text-sm font-bold text-brand-800 shadow-lg transition-colors hover:bg-brand-50"
             >
               <Icon name="whatsapp" className="h-5 w-5 text-green-600" />
               Daftar via WhatsApp

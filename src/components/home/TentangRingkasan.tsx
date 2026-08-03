@@ -4,7 +4,7 @@
  */
 import { motion } from 'framer-motion'
 import Icon from '../ui/Icon'
-import { staggerContainer, fadeUp, fadeIn, viewportOnce } from './anim'
+import { staggerContainer, fadeUp, fadeIn } from './anim'
 
 function TentangRingkasan() {
   return (
@@ -12,9 +12,7 @@ function TentangRingkasan() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className='grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-16'
         >
           {/* ===== KONTEN KIRI: Eyebrow & Judul ===== */}
@@ -39,9 +37,7 @@ function TentangRingkasan() {
           {/* Teks */}
           <motion.div
             variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="space-y-5"
           >
             <motion.p variants={fadeUp} className="leading-relaxed text-gray-500">
@@ -81,9 +77,7 @@ function TentangRingkasan() {
           {/* Panel visual — foto Masjidil Haram (Wikimedia Commons) */}
           <motion.div
             variants={fadeIn}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
+            initial={false}
             className="relative"
           >
             <div className="overflow-hidden rounded-2xl shadow-xl ring-1 ring-gray-100">

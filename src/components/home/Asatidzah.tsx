@@ -9,7 +9,7 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import Icon from '../ui/Icon'
 import SectionHeading from '../ui/SectionHeading'
-import { fadeUp, viewportOnce } from './anim'
+import { fadeUp } from './anim'
 import { ASATIDZAH } from '../../data/asatidzah'
 
 /** Jumlah kartu terlihat per ukuran layar */
@@ -51,27 +51,14 @@ function Asatidzah() {
     <section className="relative h-[523px] overflow-hidden bg-white/90">
       {/* Background foto + overlay */}
       <div className="relative mx-auto flex h-full max-w-7xl flex-col justify-center px-4 py-8 sm:px-6 lg:px-8">
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-        >
+        <motion.div variants={fadeUp} initial={false}>
           <SectionHeading
-            variant="dark"
-            eyebrow="Asatidzah Pembimbing"
             title="Pembimbing Umrah & Haji Khusus"
           />
         </motion.div>
 
         {/* SATU carousel */}
-        <motion.div
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
-          className="mt-6"
-        >
+        <motion.div variants={fadeUp} initial={false} className="mt-6">
           <div className="relative">
             <div className="overflow-hidden">
               <div
@@ -84,7 +71,7 @@ function Asatidzah() {
                     className="shrink-0 px-2.5"
                     style={{ width: `${100 / perView}%` }}
                   >
-                    <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-white/95 px-5 py-7 text-center shadow-lg ring-1 ring-white/20 backdrop-blur transition-transform duration-300 hover:-translate-y-1">
+                    <div className="flex h-full flex-col items-center justify-center rounded-2xl bg-white/95 px-5 py-7 text-center shadow-lg ring-1 ring-white/20 backdrop-blur transition-shadow duration-300 hover:shadow-xl">
                       <img
                         src={a.foto}
                         alt={a.nama}
@@ -130,7 +117,7 @@ function Asatidzah() {
                 type="button"
                 onClick={() => setIndex(i)}
                 aria-label={`Slide ${i + 1}`}
-                className={`h-2 rounded-full transition-all ${i === index ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
+                className={`h-2 rounded-full transition-[width,background-color] ${i === index ? 'w-6 bg-white' : 'w-2 bg-white/40 hover:bg-white/60'
                   }`}
               />
             ))}

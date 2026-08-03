@@ -55,14 +55,14 @@ function Hero() {
               href={waLink('Assalamualaikum, saya ingin konsultasi paket umrah Ebitour')}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-lg bg-sky-100 px-5 py-3 text-sm font-bold text-brand-950 shadow-lg transition-all hover:-translate-y-0.5 hover:bg-sky-300 sm:px-6 sm:py-3.5"
+              className="inline-flex items-center gap-2 rounded-lg bg-sky-100 px-5 py-3 text-sm font-bold text-brand-950 shadow-lg transition-colors hover:bg-sky-300 sm:px-6 sm:py-3.5"
             >
               <Icon name="whatsapp" className="h-5 w-5" />
               Konsultasi via WhatsApp
             </a>
             <a
               href="/paket-umrah"
-              className="inline-flex items-center gap-2 rounded-lg border border-white/40 bg-brand-950/40 px-5 py-3 text-sm font-semibold text-white backdrop-blur transition-all hover:-translate-y-0.5 hover:bg-brand-950/60 sm:px-6 sm:py-3.5"
+              className="inline-flex items-center gap-2 rounded-lg border border-white/40 bg-brand-950/40 px-5 py-3 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-brand-950/60 sm:px-6 sm:py-3.5"
             >
               Lihat Paket Umrah
               <Icon name="arrowRight" className="h-4 w-4" />

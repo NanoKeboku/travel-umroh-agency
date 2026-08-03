@@ -24,7 +24,6 @@ function GaleriPreview() {
         >
           <SectionHeading
             variant="dark"
-            eyebrow="Dokumentasi"
             title="Bukti Nyata Perjalanan Jamaah Kami"
             description="Foto dan video keberangkatan jamaah Ebitour — social proof yang bisa Anda lihat langsung."
           />
@@ -33,9 +32,7 @@ function GaleriPreview() {
         {/* Grid: 2 kolom mobile, 4 desktop */}
         <motion.div
           variants={staggerContainer}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="mt-10 grid grid-cols-2 gap-3 sm:mt-14 sm:gap-5 lg:grid-cols-4"
         >
           {foto.map((g) => (
@@ -49,11 +46,11 @@ function GaleriPreview() {
                   src={g.url}
                   alt={g.judul}
                   loading="lazy"
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  className="h-full w-full object-cover"
                 />
               </div>
-              {/* Overlay */}
-              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/10 to-transparent p-2.5 opacity-100 transition-opacity duration-300 sm:opacity-0 sm:group-hover:opacity-100">
+              {/* Overlay — caption selalu terlihat (mobile & desktop) */}
+              <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/70 via-black/10 to-transparent p-2.5">
                 <span className="w-fit rounded-full bg-white/20 px-2 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-white backdrop-blur sm:text-[10px]">
                   {g.kategori}
                 </span>
@@ -67,9 +64,7 @@ function GaleriPreview() {
 
         <motion.p
           variants={fadeIn}
-          initial="hidden"
-          whileInView="show"
-          viewport={viewportOnce}
+          initial={false}
           className="mt-8 text-center sm:mt-10"
         >
           <Link
