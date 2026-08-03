@@ -21,8 +21,9 @@ function Hero() {
           className="h-full w-full object-cover object-center"
           loading="eager"
         />
-        {/* Overlay gradasi: gelap di kiri (teks), transparan di kanan (kartu) */}
-
+        {/* Overlay gradasi: gelap di kiri (agar teks kontras), transparan di kanan */}
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-950/90 via-brand-950/60 to-brand-950/20" />
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-brand-950/70 to-transparent" />
       </div>
 
       <motion.div
