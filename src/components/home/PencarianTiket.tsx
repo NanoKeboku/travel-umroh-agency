@@ -1,40 +1,28 @@
 /**
- * PaketUnggulan — section gabungan di Beranda (satu section utuh):
- *   1. "Temukan Jadwal Keberangkatan Anda"  → widget pencarian
- *   2. Kartu tiket terbaru (voucher)         → 3 jadwal terdekat
- *   3. "Pilihan Paket Terbaik Kami"          → tab Umrah/Haji + kartu
- * Klik kartu umrah → /paket-umrah/:slug, kartu haji → /paket-haji/:slug.
+ * PencarianTiket — section di Beranda: pencarian tiket + card paket umrah
+ * Urutan: "Temukan Jadwal Keberangkatan Anda" (search widget) →
+ *         card paket umrah (tanpa tab, fokus umrah saja).
+ * Klik card → halaman tiket detail (/paket-umrah/:id).
  */
-import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import Icon from '../ui/Icon'
 import SectionHeading from '../ui/SectionHeading'
 import SearchWidget from '../paket/SearchWidget'
-import TiketTerbaru from './TiketTerbaru'
 import { staggerContainer, fadeUp, viewportOnce } from './anim'
-import { PAKET_UMRAH, PAKET_HAJI } from '../../data/paket'
+import { PAKET_UMRAH } from '../../data/paket'
 import type { Paket } from '../../data/paket'
 import { formatRupiah, waLink } from '../../utils/format'
 
-type Tab = 'umrah' | 'haji'
-
-const TAB_CLS = {
-  base: 'rounded-full px-5 py-2 text-sm font-semibold transition-colors',
-  aktif: 'bg-brand-600 text-white shadow',
-  idle: 'text-gray-500 hover:text-brand-600',
-}
-
-function KartuPaket({ paket, tab }: { paket: Paket; tab: Tab }) {
-  const isHaji = tab === 'haji'
-  const target = isHaji ? `/paket-haji/${paket.id}` : `/paket-umrah/${paket.id}`
+/** Card paket umrah */
+function KartuPaket({ paket }: { paket: Paket }) {
+  const target = `/paket-umrah/${paket.id}`
 
   return (
     <motion.article
       variants={fadeUp}
       className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-soft ring-1 ring-gray-100 transition-all hover:-translate-y-1.5 hover:shadow-xl"
     >
-      {/* Gambar — klik → halaman detail */}
       <Link to={target} className="relative block aspect-[16/10] overflow-hidden">
         <img
           src={paket.gambar}
@@ -52,7 +40,6 @@ function KartuPaket({ paket, tab }: { paket: Paket; tab: Tab }) {
         </span>
       </Link>
 
-      {/* Konten */}
       <div className="flex flex-1 flex-col p-4 sm:p-5">
         <Link to={target} className="hover:underline">
           <h3 className="text-base font-bold text-brand-900 sm:text-lg">{paket.nama}</h3>
@@ -85,7 +72,7 @@ function KartuPaket({ paket, tab }: { paket: Paket; tab: Tab }) {
             to={target}
             className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
           >
-            {isHaji ? 'Lihat Detail' : 'Lihat Tiket'}
+            Lihat Tiket
             <Icon name="arrowRight" className="h-4 w-4" />
           </Link>
           <a
@@ -103,16 +90,11 @@ function KartuPaket({ paket, tab }: { paket: Paket; tab: Tab }) {
   )
 }
 
-function PaketUnggulan() {
-  const [tab, setTab] = useState<Tab>('umrah')
-  const daftar = tab === 'umrah' ? PAKET_UMRAH.slice(0, 3) : PAKET_HAJI.slice(0, 3)
-  const linkSemua = tab === 'umrah' ? '/paket-umrah' : '/paket-haji'
-  const labelSemua = tab === 'umrah' ? 'Lihat Semua Paket Umrah' : 'Lihat Semua Paket Haji'
-
+function PencarianTiket() {
   return (
     <section className="bg-sand-100 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* ===== 1. Cari tiket ===== */}
+        {/* Pencarian tiket */}
         <motion.div
           variants={staggerContainer}
           initial="hidden"
@@ -125,7 +107,6 @@ function PaketUnggulan() {
             description="Pilih bulan keberangkatan dan jenis paket untuk melihat tiket umroh yang tersedia."
           />
         </motion.div>
-
         <motion.div
           variants={fadeUp}
           initial="hidden"
@@ -136,75 +117,21 @@ function PaketUnggulan() {
           <SearchWidget paket={PAKET_UMRAH} />
         </motion.div>
 
-        {/* Kartu tiket terbaru (voucher) — 3 jadwal terdekat */}
-        <TiketTerbaru />
-
-        {/* ===== 2. Pilihan paket terbaik ===== */}
-        <div className="mt-16 sm:mt-20">
-          <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
-          >
-            <SectionHeading
-              eyebrow="Paket Kami"
-              title="Pilihan Paket Terbaik Kami"
-              description="Harga transparan, fasilitas jelas. Pilih paket yang sesuai kebutuhan Anda."
-            />
-
-            {/* Filter tab: Umrah / Haji */}
-            <div className="mt-8 flex justify-center">
-              <div className="inline-flex rounded-full bg-white p-1 shadow-soft ring-1 ring-gray-100">
-                {(['umrah', 'haji'] as const).map((t) => (
-                  <button
-                    key={t}
-                    type="button"
-                    onClick={() => setTab(t)}
-                    className={`${TAB_CLS.base} ${
-                      tab === t ? TAB_CLS.aktif : TAB_CLS.idle
-                    }`}
-                  >
-                    {t === 'umrah' ? 'Paket Umrah' : 'Paket Haji'}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Grid kartu — key={tab} biar animasi jalan ulang saat ganti tab */}
-          <motion.div
-            key={tab}
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
-            className="mt-10 grid grid-cols-1 gap-5 sm:mt-14 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {daftar.map((paket) => (
-              <KartuPaket key={paket.id} paket={paket} tab={tab} />
-            ))}
-          </motion.div>
-
-          <motion.p
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="show"
-            viewport={viewportOnce}
-            className="mt-8 text-center sm:mt-10"
-          >
-            <Link
-              to={linkSemua}
-              className="inline-flex items-center gap-2 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
-            >
-              {labelSemua}
-              <Icon name="arrowRight" className="h-4 w-4" />
-            </Link>
-          </motion.p>
-        </div>
+        {/* Card paket umrah */}
+        <motion.div
+          variants={staggerContainer}
+          initial="hidden"
+          whileInView="show"
+          viewport={viewportOnce}
+          className="mt-10 grid grid-cols-1 gap-5 sm:mt-14 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {PAKET_UMRAH.map((paket) => (
+            <KartuPaket key={paket.id} paket={paket} />
+          ))}
+        </motion.div>
       </div>
     </section>
   )
 }
 
-export default PaketUnggulan
+export default PencarianTiket

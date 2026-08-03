@@ -1,33 +1,41 @@
 /**
  * Navbar — navigasi utama (sticky, mobile menu)
- * "Layanan" = dropdown berisi Paket Umrah & Paket Haji.
- * Desktop: dropdown muncul saat hover. Mobile: item bisa di-expand.
+ * "Paket Umrah" & "Paket Haji" digabung di dropdown "Layanan".
  */
 import { useState } from 'react'
-import { NavLink, Link } from 'react-router-dom'
+import { NavLink, Link, useLocation } from 'react-router-dom'
 import Icon from '../ui/Icon'
 
-const NAV_ITEMS = [
+const NAV_AWAL = [
   { to: '/', label: 'Beranda' },
   { to: '/tentang', label: 'Tentang Kami' },
+]
+
+const NAV_AKHIR = [
   { to: '/dokumentasi', label: 'Dokumentasi' },
   { to: '/galeri', label: 'Galeri' },
   { to: '/artikel', label: 'Artikel' },
   { to: '/kontak', label: 'Kontak' },
 ]
 
-const LAYANAN_ITEMS = [
-  { to: '/paket-umrah', label: 'Paket Umrah' },
-  { to: '/paket-haji', label: 'Paket Haji' },
-]
-
 function Navbar() {
-  const [open, setOpen] = useState(false)
-  const [layananOpen, setLayananOpen] = useState(false)
+  const [open, setOpen] = useState(false) // menu mobile
+  const [layananOpen, setLayananOpen] = useState(false) // dropdown desktop
+  const [layananMobileOpen, setLayananMobileOpen] = useState(false) // accordion mobile
+  const location = useLocation()
+
+  const layananAktif =
+    location.pathname.startsWith('/paket-umrah') ||
+    location.pathname.startsWith('/paket-haji')
 
   const linkClass = ({ isActive }: { isActive: boolean }) =>
     `text-sm font-medium transition-colors ${
       isActive ? 'text-brand-600' : 'text-gray-600 hover:text-brand-600'
+    }`
+
+  const layananItemCls = ({ isActive }: { isActive: boolean }) =>
+    `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+      isActive ? 'bg-brand-50 text-brand-700' : 'text-gray-600 hover:bg-gray-50'
     }`
 
   return (
@@ -45,7 +53,7 @@ function Navbar() {
 
         {/* Menu desktop */}
         <ul className="hidden items-center gap-6 lg:flex">
-          {NAV_ITEMS.map((item) => (
+          {NAV_AWAL.map((item) => (
             <li key={item.to}>
               <NavLink to={item.to} className={linkClass}>
                 {item.label}
@@ -53,36 +61,58 @@ function Navbar() {
             </li>
           ))}
 
-          {/* Dropdown Layanan (hover) */}
-          <li className="group relative">
+          {/* Dropdown Layanan (Paket Umrah + Paket Haji) */}
+          <li className="relative">
             <button
               type="button"
-              className="flex items-center gap-1 text-sm font-medium text-gray-600 transition-colors hover:text-brand-600"
+              onClick={() => setLayananOpen((o) => !o)}
+              aria-expanded={layananOpen}
+              className={`flex items-center gap-1 text-sm font-medium transition-colors ${
+                layananAktif ? 'text-brand-600' : 'text-gray-600 hover:text-brand-600'
+              }`}
             >
               Layanan
               <Icon
                 name="chevronDown"
-                className="h-4 w-4 transition-transform duration-200 group-hover:rotate-180"
+                className={`h-4 w-4 transition-transform ${layananOpen ? 'rotate-180' : ''}`}
               />
             </button>
-            <div className="invisible absolute left-1/2 top-full z-50 mt-3 w-52 -translate-x-1/2 rounded-xl bg-white p-2 opacity-0 shadow-xl ring-1 ring-gray-100 transition-all duration-150 group-hover:visible group-hover:opacity-100">
-              {LAYANAN_ITEMS.map((item) => (
-                <NavLink
-                  key={item.to}
-                  to={item.to}
-                  className={({ isActive }) =>
-                    `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'bg-brand-50 text-brand-700'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-brand-600'
-                    }`
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
-            </div>
+
+            {layananOpen && (
+              <>
+                {/* Backdrop transparan: klik di luar → tutup */}
+                <div
+                  className="fixed inset-0 z-10"
+                  onClick={() => setLayananOpen(false)}
+                  aria-hidden="true"
+                />
+                <div className="absolute left-0 top-full z-20 mt-2 w-52 rounded-xl border border-gray-100 bg-white p-2 shadow-lg">
+                  <NavLink
+                    to="/paket-umrah"
+                    onClick={() => setLayananOpen(false)}
+                    className={layananItemCls}
+                  >
+                    Paket Umrah
+                  </NavLink>
+                  <NavLink
+                    to="/paket-haji"
+                    onClick={() => setLayananOpen(false)}
+                    className={layananItemCls}
+                  >
+                    Paket Haji
+                  </NavLink>
+                </div>
+              </>
+            )}
           </li>
+
+          {NAV_AKHIR.map((item) => (
+            <li key={item.to}>
+              <NavLink to={item.to} className={linkClass}>
+                {item.label}
+              </NavLink>
+            </li>
+          ))}
         </ul>
 
         {/* CTA desktop */}
@@ -100,10 +130,7 @@ function Navbar() {
           type="button"
           aria-label={open ? 'Tutup menu' : 'Buka menu'}
           aria-expanded={open}
-          onClick={() => {
-            setOpen((o) => !o)
-            setLayananOpen(false)
-          }}
+          onClick={() => setOpen((o) => !o)}
           className="flex h-10 w-10 items-center justify-center rounded-lg text-gray-600 transition-colors hover:bg-gray-100 lg:hidden"
         >
           <Icon name={open ? 'close' : 'menu'} className="h-6 w-6" />
@@ -114,7 +141,7 @@ function Navbar() {
       {open && (
         <div className="border-t border-gray-100 bg-white px-4 pb-6 pt-2 lg:hidden">
           <ul className="space-y-1">
-            {NAV_ITEMS.map((item) => (
+            {NAV_AWAL.map((item) => (
               <li key={item.to}>
                 <NavLink
                   to={item.to}
@@ -132,44 +159,79 @@ function Navbar() {
               </li>
             ))}
 
-            {/* Layanan — expandable */}
+            {/* Layanan (accordion mobile) */}
             <li>
               <button
                 type="button"
-                onClick={() => setLayananOpen((o) => !o)}
-                aria-expanded={layananOpen}
-                className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50"
+                onClick={() => setLayananMobileOpen((o) => !o)}
+                aria-expanded={layananMobileOpen}
+                className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                  layananAktif
+                    ? 'bg-brand-50 text-brand-700'
+                    : 'text-gray-600 hover:bg-gray-50'
+                }`}
               >
                 Layanan
                 <Icon
                   name="chevronDown"
-                  className={`h-4 w-4 transition-transform duration-200 ${
-                    layananOpen ? 'rotate-180' : ''
+                  className={`h-4 w-4 transition-transform ${
+                    layananMobileOpen ? 'rotate-180' : ''
                   }`}
                 />
               </button>
-              {layananOpen && (
-                <ul className="ml-3 space-y-1 border-l border-gray-100 pl-3">
-                  {LAYANAN_ITEMS.map((item) => (
-                    <li key={item.to}>
-                      <NavLink
-                        to={item.to}
-                        onClick={() => setOpen(false)}
-                        className={({ isActive }) =>
-                          `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                            isActive
-                              ? 'bg-brand-50 text-brand-700'
-                              : 'text-gray-600 hover:bg-gray-50'
-                          }`
-                        }
-                      >
-                        {item.label}
-                      </NavLink>
-                    </li>
-                  ))}
+              {layananMobileOpen && (
+                <ul className="ml-3 mt-1 space-y-1 border-l-2 border-brand-100 pl-3">
+                  <li>
+                    <NavLink
+                      to="/paket-umrah"
+                      onClick={() => setOpen(false)}
+                      className={({ isActive }) =>
+                        `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                          isActive
+                            ? 'bg-brand-50 text-brand-700'
+                            : 'text-gray-600 hover:bg-gray-50'
+                        }`
+                      }
+                    >
+                      Paket Umrah
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/paket-haji"
+                      onClick={() => setOpen(false)}
+                      className={({ isActive }) =>
+                        `block rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                          isActive
+                            ? 'bg-brand-50 text-brand-700'
+                            : 'text-gray-600 hover:bg-gray-50'
+                        }`
+                      }
+                    >
+                      Paket Haji
+                    </NavLink>
+                  </li>
                 </ul>
               )}
             </li>
+
+            {NAV_AKHIR.map((item) => (
+              <li key={item.to}>
+                <NavLink
+                  to={item.to}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    `block rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-brand-50 text-brand-700'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`
+                  }
+                >
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
 
             <li className="pt-2">
               <NavLink

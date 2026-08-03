@@ -13,6 +13,8 @@ import Button from '../ui/Button'
 
 interface SearchWidgetProps {
   paket: Paket[]
+  /** Label tombol cari (default: "Cari Paket Umroh") */
+  buttonLabel?: string
 }
 
 const SELECT_CLS =

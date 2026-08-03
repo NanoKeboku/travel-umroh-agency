@@ -15,8 +15,10 @@ interface PaketCardProps {
   basePath?: string
 }
 
-function PaketCard({ paket, basePath = '/paket-umrah' }: PaketCardProps) {
+function PaketCard({ paket }: PaketCardProps) {
   const hargaMulai = paket.hargaQuad ?? paket.harga
+  // Haji → /paket-haji/:id ; Umrah → /paket-umrah/:id
+  const basePath = paket.jenis === 'haji' ? '/paket-haji' : '/paket-umrah'
 
   return (
     <article className="group overflow-hidden rounded-2xl bg-white shadow-soft transition-shadow hover:shadow-lg">
