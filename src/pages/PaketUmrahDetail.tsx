@@ -79,8 +79,8 @@ function PaketUmrahDetail() {
           Beranda
         </Link>
         {' / '}
-        <Link to="/paket-umrah" className="hover:text-brand-600">
-          Paket Umrah
+        <Link to={paket.jenis === 'haji' ? '/paket-haji' : '/paket-umrah'} className="hover:text-brand-600">
+          {paket.jenis === 'haji' ? 'Paket Haji' : 'Paket Umrah'}
         </Link>
         {' / '}
         <span className="text-gray-600">{paket.nama}</span>
