@@ -11,6 +11,7 @@ import TentangRingkasan from '../components/home/TentangRingkasan'
 import PencarianTiket from '../components/home/PencarianTiket'
 import Keunggulan from '../components/home/Keunggulan'
 import GaleriPreview from '../components/home/GaleriPreview'
+import Asatidzah from '../components/home/Asatidzah'
 import TestimoniSlider from '../components/home/TestimoniSlider'
 import CtaBanner from '../components/home/CtaBanner'
 
@@ -22,6 +23,7 @@ function Home() {
       <PencarianTiket />
       <Keunggulan />
       <GaleriPreview />
+      <Asatidzah />
       <TestimoniSlider />
       <CtaBanner />
     </>
