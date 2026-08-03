@@ -35,6 +35,8 @@ dikembangkan (harga beda per tanggal, promo per jadwal, kuota per jadwal).
 | hotel_mekkah | nama + bintang |
 | hotel_madinah | nama + bintang |
 | maskapai | maskapai default |
+| dp_per_pax | uang muka (mis. Rp 15 jt) |
+| pelunasan | tenggat pelunasan (mis. max H-14) |
 | fasilitas | list |
 | itinerary | list per hari |
 | foto / galeri | gambar |
@@ -48,6 +50,8 @@ dikembangkan (harga beda per tanggal, promo per jadwal, kuota per jadwal).
 | tanggal_berangkat | tanggal keberangkatan |
 | harga | harga per jamaah (base) |
 | harga_quad / harga_triple / harga_double | varian harga per jenis kamar (lihat 3b) |
+| bandara_keberangkatan | mis. Soekarno-Hatta, Kertajati, Juanda |
+| addon_tiket_domestik | harga tiket pesawat domestik (opsional) |
 | sisa_kuota | jumlah kursi tersisa |
 | maskapai & jam terbang | bisa beda per jadwal |
 
@@ -215,6 +219,80 @@ Pembuatan/perubahan/perpanjangan paspor · Pengeluaran pribadi
 
 ### 15. CTA Penutup
 - Tombol **"Daftar Sekarang"** → scroll/formulir → form lead capture
+
+---
+
+## 3c. Referensi 2 — PT Nur Ramadhan (Tab Detail + Form "Pesan Paket")
+
+Halaman detail kedua ini memakai struktur **TAB**. Alternatif dari pola
+scroll-panjang di 3b. Rekomendasi: pilih salah satu (tab lebih rapi utk
+banyak konten).
+
+### Header Info (di atas tab)
+- Judul: `[TANGGAL] ([KODE MASKAPAI]) - [DURASI] [KATEGORI]`
+  contoh: `10 AGUSTUS 2026 (GA) - 9 HARI VIP + KERETA CEPAT + KOPER KABIN`
+- Info ringkas: Hotel Makkah, Hotel Madinah, Jenis Paket, Maskapai
+- Tombol "Tampilkan Informasi Detail" (expand/collapse)
+
+### Tab 1 — Itinerary
+- Format per hari: `Hari Ke-N, Rute/Lokasi: [HARI, TANGGAL, RUTE]`
+- Narasi panjang deskriptif: jam kumpul, nomor penerbangan, jam berangkat/
+  tiba, aktivitas, hotel, ziarah (contoh lengkap ada di paste_2)
+- Catatan: program bisa berubah mengikuti regulasi Saudi/Indonesia;
+  kunjungan Raudhah mengikuti jadwal aplikasi Nusuk
+
+### Tab 2 — Fasilitas (dua daftar)
+**HARGA TERMASUK** (contoh):
+- Tiket pesawat PP · Hotel berbintang sesuai paket · Bus full AC · Visa
+- Ziarah tour Madinah/Makkah/Jeddah · Makan 3x sehari · Bimbingan manasik
+- Air Zamzam 5L · Lounge bandara domestik
+- Perlengkapan: koper bagasi, tas paspor, tas sandal, kain ihrom (lk),
+  mukena (pr), kain seragam, buku panduan manasik & perjalanan, doa
+  gantungan, pin, ID
+- Pembimbing ibadah · Guide
+
+**HARGA TIDAK TERMASUK** (contoh):
+- Paspor · vaksin · kebutuhan pribadi · guide pendamping khusus
+- Kehilangan barang/bagasi · kelebihan bagasi · acara tambahan
+- Force majeure · biaya peraturan baru Arab Saudi · biaya pengobatan
+
+### Tab 3 — Persyaratan Peserta
+- Paspor asli berlaku min **8 bulan** + nama min 2 kata (contoh: Musthofa Yoni)
+- Scan e-KTP & kartu keluarga
+- Pas foto 4x6, berwarna, bg putih, **80% wajah 20% badan**
+- Buku kuning vaksin Meningitis (E-ICV) & Polio (E-IPV)
+- DP Rp 15.000.000/pax · pelunasan maks **2 minggu** sebelum berangkat
+- Jamaah risiko tinggi wajib pendamping keluarga (saat mendaftar)
+- Semua dokumen diserahkan maks **H-20**
+
+### Tab 4 — Syarat & Ketentuan
+- Pembatalan **H-20**: penalti Rp 25.000.000
+- Penjadwalan ulang **H-30**: biaya tambahan Rp 4.000.000
+- Aturan **Nusuk**: 1 paspor = 1 bed/ranjang (tidak ada sharing bed)
+- Kebijakan pengembalian dana dapat berubah sewaktu-waktu
+
+### Tab 5 — Pesan Paket (Form Booking) ⭐
+Field:
+| Field | Tipe |
+|---|---|
+| Program Hari | dropdown |
+| Bandara Keberangkatan | dropdown (Soekarno-Hatta, Kertajati, Juanda...) |
+| Tanggal Keberangkatan | pilihan jadwal |
+| Pilihan Kamar | per jenis kamar: harga/pax + stepper Jumlah (pax) |
+| Tambahan Tiket Pesawat Domestik | add-on |
+| **Total** | **IDR 0,00 — live calculation** |
+
+Contoh harga: Double Rp 47,5 jt · Triple Rp 44,5 jt · Quad Rp 43,5 jt
+
+Logika total (frontend, tapi harga dari server):
+```
+total = Σ (harga_jenis_kamar × jumlah_pax_jenis_kamar) + addon_domestik
+```
+
+Catatan implementasi:
+- State form: per jenis kamar → jumlah pax (stepper 0+), validasi min 1 pax
+- Harga & add-on dari data jadwal (server), bukan hardcode
+- Submit → booking/lead ke admin (WA / Fonnte)
 
 ---
 
