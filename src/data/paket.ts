@@ -42,6 +42,7 @@ export interface ItineraryHari {
 export interface Paket {
   id: string
   jenis: 'umrah' | 'haji'
+  kategori: string // jenis paket: 'Hemat' | 'Reguler' | 'Premium' | 'VIP' | 'Furoda'
   nama: string
   harga: number
   hargaQuad?: number // per pax kamar Quad (4 orang)
@@ -111,6 +112,7 @@ export const PAKET_UMRAH: Paket[] = [
   {
     id: 'umrah-hemat',
     jenis: 'umrah',
+    kategori: 'Hemat',
     nama: 'Paket Umrah Hemat',
     harga: 32500000,
     hargaQuad: 30500000,
@@ -166,6 +168,7 @@ export const PAKET_UMRAH: Paket[] = [
   {
     id: 'umrah-reguler',
     jenis: 'umrah',
+    kategori: 'Reguler',
     nama: 'Paket Umrah Reguler',
     harga: 38500000,
     hargaQuad: 36500000,
@@ -224,6 +227,7 @@ export const PAKET_UMRAH: Paket[] = [
   {
     id: 'umrah-premium',
     jenis: 'umrah',
+    kategori: 'Premium',
     nama: 'Paket Umrah Premium',
     harga: 45500000,
     hargaQuad: 43500000,
@@ -295,6 +299,7 @@ export const PAKET_HAJI: Paket[] = [
   {
     id: 'haji-reguler',
     jenis: 'haji',
+    kategori: 'Haji Reguler',
     nama: 'Haji Reguler',
     harga: 0, // mengikuti kuota & kebijakan Kemenag
     durasi: '40 Hari',
@@ -319,6 +324,7 @@ export const PAKET_HAJI: Paket[] = [
   {
     id: 'haji-plus',
     jenis: 'haji',
+    kategori: 'Haji Plus',
     nama: 'Haji Plus (Khusus)',
     harga: 0, // hubungi admin
     durasi: '30 Hari',
