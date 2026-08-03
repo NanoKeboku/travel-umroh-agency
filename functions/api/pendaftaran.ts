@@ -61,21 +61,37 @@ async function kirimNotifikasiFonnte(
     'Segera konfirmasi kuota ke calon jamaah.',
   ].join('\n')
 
+  // Normalisasi nomor tujuan: '08xxx' → '628xxx'.
+  // Hanya kirim countryCode jika target masih format lokal '0...'
+  // (Fonnte menolak jika 62xx + countryCode 62 dikirim bersamaan).
+  const targetNormal = admin.startsWith('0') ? `62${admin.slice(1)}` : admin
+  const payload: Record<string, unknown> = { target: targetNormal, message: pesan }
+  if (admin.startsWith('0')) payload.countryCode = '62'
+
   const res = await fetch('https://api.fonnte.com/send', {
     method: 'POST',
     headers: {
       Authorization: token,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({
-      target: admin,
-      message: pesan,
-      countryCode: '62',
-    }),
+    body: JSON.stringify(payload),
   })
 
-  const body = (await res.json().catch(() => null)) as { status?: string; detail?: string } | null
-  return { ok: res.ok, detail: body?.status ?? body?.detail ?? String(res.status) }
+  // PENTING: Fonnte selalu balas HTTP 200 walau pesan ditolak.
+  // Sukses = body.status === true. Gagal = body.status false + body.detail (pesan error).
+  const body = (await res.json().catch(() => null)) as {
+    status?: unknown
+    detail?: string
+  } | null
+
+  if (body && body.status === true) {
+    return { ok: true, detail: 'terkirim' }
+  }
+  const detail =
+    (body && typeof body.detail === 'string' && body.detail) ||
+    JSON.stringify(body ?? {}) ||
+    `HTTP ${res.status}`
+  return { ok: false, detail }
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {

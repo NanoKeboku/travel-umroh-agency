@@ -11,7 +11,6 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import Icon from '../components/ui/Icon'
 import { PAKET_UMRAH, PAKET_HAJI } from '../data/paket'
-import { waLink } from '../utils/format'
 import { submitPendaftaran } from '../api/pendaftaranApi'
 
 const SEMUA_PAKET = [...PAKET_UMRAH, ...PAKET_HAJI]
@@ -58,28 +57,9 @@ function Pendaftaran() {
     }
 
     try {
-      // 1) Simpan ke database via API
-      const result = await submitPendaftaran(payload)
-
-      // 2) Kalau notifikasi Fonnte belum dikonfigurasi, tetap buka WA
-      //    supaya admin tetap dapat info (fallback manual).
-      if (!result.notifikasi?.ok) {
-        const teks = [
-          'Assalamualaikum, saya ingin mendaftar paket Ebitour.',
-          '',
-          `Nama: ${nama || '-'}`,
-          `No. WhatsApp: ${whatsapp || '-'}`,
-          `Alamat: ${alamat || '-'}`,
-          `Paket: ${paketDipilih?.nama ?? '-'}`,
-          `Tanggal berangkat: ${tanggal || 'belum dipilih'}`,
-          `Jumlah jamaah: ${jumlah} pax`,
-          hargaMulai > 0 ? `Perkiraan harga mulai: Rp${hargaMulai.toLocaleString('id-ID')}/pax` : '',
-        ]
-          .filter(Boolean)
-          .join('\n')
-        window.open(waLink(teks), '_blank', 'noopener,noreferrer')
-      }
-
+      // Simpan ke database + sistem kirim notifikasi WA ke admin (Fonnte).
+      // Calon jamaah TIDAK perlu kirim apa-apa — admin yang menghubungi.
+      await submitPendaftaran(payload)
       setStatus('sukses')
     } catch (err) {
       console.error('Pendaftaran gagal:', err)
@@ -246,8 +226,8 @@ function Pendaftaran() {
 
           {status === 'sukses' && (
             <div className="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-center text-sm text-green-700">
-              ✓ Pendaftaran berhasil dikirim! Admin kami akan segera menghubungi
-              Anda untuk konfirmasi kuota.
+              ✓ Pendaftaran berhasil dikirim! Tim admin kami akan segera
+              menghubungi Anda via WhatsApp untuk konfirmasi kuota.
             </div>
           )}
           {status === 'gagal' && (
@@ -258,8 +238,8 @@ function Pendaftaran() {
           )}
 
           <p className="mt-3 text-center text-xs text-gray-400">
-            Pendaftaran tersimpan di database & dikonfirmasi admin. Notifikasi
-            WhatsApp otomatis dikirim jika Fonnte dikonfigurasi.
+            Dengan mengirim, data Anda tersimpan di sistem & admin mendapat
+            notifikasi otomatis. Anda tidak perlu mengirim ulang via WhatsApp.
           </p>
         </form>
       </section>

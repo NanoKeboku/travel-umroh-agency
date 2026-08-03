@@ -5,8 +5,8 @@
 export const KONTAK = {
   nama: 'Travel Umrah Ebitour Purworejo',
   singkatan: 'Ebitour',
-  whatsapp: '6280000000000', // GANTI: format 62xxx tanpa + dan tanpa spasi
-  telepon: '(0000) 000-0000', // GANTI
+  whatsapp: '628512976177', // WA admin (nomor asli — dari setup Fonnte)
+  telepon: '(0000) 000-0000', // GANTI: telepon kantor
   email: 'info@ebitour.com', // GANTI
   alamat: 'Jl. Contoh No. 00, Purworejo, Jawa Tengah', // GANTI
   mapsUrl: 'https://maps.google.com/?q=Purworejo', // GANTI: link Google Maps kantor
