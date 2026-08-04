@@ -8,7 +8,6 @@ import { motion } from 'framer-motion'
 import Icon from '../ui/Icon'
 import { staggerContainer, fadeUp } from './anim'
 import { KONTAK } from '../../data/kontak'
-import { waLink } from '../../utils/format'
 
 function Hero() {
   return (
@@ -52,13 +51,11 @@ function Hero() {
           {/* CTA */}
           <motion.div variants={fadeUp} className="mt-8 flex flex-wrap gap-3 sm:gap-4">
             <a
-              href={waLink('Assalamualaikum, saya ingin konsultasi paket umrah Ebitour')}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="/pendaftaran"
               className="inline-flex items-center gap-2 rounded-lg bg-sky-100 px-5 py-3 text-sm font-bold text-brand-950 shadow-lg transition-colors hover:bg-sky-300 sm:px-6 sm:py-3.5"
             >
-              <Icon name="whatsapp" className="h-5 w-5" />
-              Konsultasi via WhatsApp
+              <Icon name="users" className="h-5 w-5" />
+              Daftar Sekarang
             </a>
             <a
               href="/paket-umrah"

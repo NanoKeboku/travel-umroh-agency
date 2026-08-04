@@ -154,10 +154,10 @@ function Navbar() {
           {/* CTA desktop */}
           <div className="hidden lg:block">
             <NavLink
-              to="/pendaftaran"
+              to="/admin"
               className="rounded-lg bg-brand-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-700"
             >
-              Daftar Sekarang
+              Login
             </NavLink>
           </div>
 
@@ -265,11 +265,11 @@ function Navbar() {
 
               <li className="pt-2">
                 <NavLink
-                  to="/pendaftaran"
+                  to="/admin"
                   onClick={() => setOpen(false)}
                   className="block rounded-lg bg-brand-600 px-3 py-2.5 text-center text-sm font-semibold text-white"
                 >
-                  Daftar Sekarang
+                  Login
                 </NavLink>
               </li>
             </ul>

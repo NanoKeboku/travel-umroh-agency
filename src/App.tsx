@@ -21,12 +21,14 @@ import FAQ from './pages/FAQ'
 import Kontak from './pages/Kontak'
 import Lokasi from './pages/Lokasi'
 import Pendaftaran from './pages/Pendaftaran'
+import Admin from './pages/Admin'
 import NotFound from './pages/NotFound'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Route publik — dibungkus Layout (Navbar + Footer + FloatingWA) */}
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/tentang" element={<About />} />
@@ -46,6 +48,9 @@ function App() {
           <Route path="/pendaftaran" element={<Pendaftaran />} />
           <Route path="*" element={<NotFound />} />
         </Route>
+
+        {/* Route admin — DI LUAR Layout (tanpa navbar/footer), akses langsung /admin */}
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   )
