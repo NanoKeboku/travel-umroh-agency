@@ -1,9 +1,10 @@
 /**
- * PesanPaketForm — form pemesanan paket umroh
+ * PesanPaketForm — form pemesanan paket umroh/haji
  * Blueprint: form "Pesan Paket" (referensi Nur Ramadhan) — DOKUMEN-INTERNAL 3c
- * Fase 1: pilihan (program hari, bandara, tanggal + sisa kursi, kamar,
- *         tiket domestik) diambil dari data paket (dummy). Total otomatis.
- * Fase 2: submit → kirim booking ke admin via WhatsApp (Fonnte).
+ * - Pilihan (program hari, bandara, tanggal + sisa kursi, kamar,
+ *   tiket domestik) diambil dari data paket. Total otomatis.
+ * - Submit → simpan ke D1 + notifikasi WA admin via Fonnte
+ *   (sistem yang menghubungi; calon jamaah tidak perlu kirim manual).
  */
 import { useState } from 'react'
 import type { FormEvent } from 'react'
@@ -11,6 +12,7 @@ import type { Paket } from '../../data/paket'
 import Button from '../ui/Button'
 import Icon from '../ui/Icon'
 import { formatRupiah, waLink } from '../../utils/format'
+import { submitPendaftaran } from '../../api/pendaftaranApi'
 
 interface PesanPaketFormProps {
   paket: Paket
@@ -28,6 +30,8 @@ type KamarKey = (typeof KAMAR)[number]['key']
 
 const SELECT_CLS =
   'w-full rounded-lg border border-gray-200 px-3 py-2 text-sm text-gray-700 focus:border-brand-500 focus:outline-none'
+const INPUT_CLS =
+  'w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 placeholder:text-gray-400 focus:border-brand-500 focus:outline-none'
 
 function PesanPaketForm({ paket, initialTanggal }: PesanPaketFormProps) {
   const durasiList = paket.durasiList ?? [paket.durasi]
@@ -50,6 +54,12 @@ function PesanPaketForm({ paket, initialTanggal }: PesanPaketFormProps) {
     hargaDouble: 0,
   })
 
+  // Data calon jamaah (wajib — keputusan 2026-08-04)
+  const [nama, setNama] = useState('')
+  const [whatsapp, setWhatsapp] = useState('')
+  const [alamat, setAlamat] = useState('')
+  const [status, setStatus] = useState<'idle' | 'mengirim' | 'sukses' | 'gagal'>('idle')
+
   const jadwalDipilih = jadwalList.find((j) => j.tanggal === tanggal)
   const sisaKuota = jadwalDipilih?.sisaKuota ?? 0
 
@@ -67,9 +77,48 @@ function PesanPaketForm({ paket, initialTanggal }: PesanPaketFormProps) {
     KAMAR.reduce((acc, k) => acc + hargaKamar(k.key) * jumlah[k.key], 0) + hargaTambahan
   const overKuota = sisaKuota > 0 && totalPax > sisaKuota
 
-  function handleSubmit(e: FormEvent) {
+  /** Rangkuman kamar berformat key data model: "hargaQuad=1;hargaTriple=2" */
+  const kamarSummary = KAMAR.filter((k) => jumlah[k.key] > 0)
+    .map((k) => `${k.key}=${jumlah[k.key]}`)
+    .join(';')
+
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault()
-    // Fase 2: kirim data booking ke admin via WhatsApp (Fonnte)
+    if (!nama.trim() || !whatsapp.trim() || !alamat.trim() || totalPax === 0) return
+
+    setStatus('mengirim')
+    try {
+      await submitPendaftaran({
+        paketId: paket.id,
+        paketNama: paket.nama,
+        tanggal,
+        nama: nama.trim(),
+        whatsapp: whatsapp.trim(),
+        alamat: alamat.trim(),
+        jumlahPax: totalPax,
+        perkiraanHarga: totalPax > 0 ? Math.round(totalHarga / totalPax) : undefined,
+        kamarType: kamarSummary || undefined,
+        bandara,
+        programHari,
+        tambahanDomestik: tambahan,
+        tambahanHarga: hargaTambahan,
+        totalHarga,
+        detailJson: JSON.stringify({
+          programHari,
+          bandara,
+          tanggal,
+          kamar: jumlah,
+          tambahan: { label: tambahan, harga: hargaTambahan },
+          totalPax,
+          totalHarga,
+          sisaKuota,
+        }),
+      })
+      setStatus('sukses')
+    } catch (err) {
+      console.error('Pemesanan gagal:', err)
+      setStatus('gagal')
+    }
   }
 
   return (
@@ -194,6 +243,46 @@ function PesanPaketForm({ paket, initialTanggal }: PesanPaketFormProps) {
             ))}
           </select>
         </label>
+
+        {/* Data calon jamaah */}
+        <div className="space-y-3 border-t border-gray-100 pt-4">
+          <p className="flex items-center gap-1.5 text-sm font-medium text-gray-600">
+            <Icon name="users" className="h-4 w-4 text-brand-500" /> Data Calon Jamaah
+          </p>
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium text-gray-500">Nama Lengkap</span>
+            <input
+              type="text"
+              value={nama}
+              onChange={(e) => setNama(e.target.value)}
+              placeholder="Nama sesuai paspor"
+              required
+              className={INPUT_CLS}
+            />
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium text-gray-500">No. WhatsApp</span>
+            <input
+              type="tel"
+              value={whatsapp}
+              onChange={(e) => setWhatsapp(e.target.value)}
+              placeholder="08xxxxxxxxxx"
+              required
+              className={INPUT_CLS}
+            />
+          </label>
+          <label className="block">
+            <span className="mb-1 block text-xs font-medium text-gray-500">Alamat</span>
+            <textarea
+              value={alamat}
+              onChange={(e) => setAlamat(e.target.value)}
+              placeholder="Alamat lengkap (kota/kabupaten)"
+              rows={2}
+              required
+              className={INPUT_CLS}
+            />
+          </label>
+        </div>
       </div>
 
       {/* Total */}
@@ -208,13 +297,30 @@ function PesanPaketForm({ paket, initialTanggal }: PesanPaketFormProps) {
         </div>
       </div>
 
-      <Button type="submit" className="mt-4 w-full" disabled={totalPax === 0 || overKuota}>
-        Pesan Sekarang
+      <Button
+        type="submit"
+        className="mt-4 w-full"
+        disabled={totalPax === 0 || overKuota || status === 'mengirim'}
+      >
+        {status === 'mengirim' ? 'Mengirim…' : 'Pesan Sekarang'}
       </Button>
       {overKuota && (
         <p className="mt-2 text-center text-xs font-medium text-red-500">
           Jumlah pax melebihi sisa kuota ({sisaKuota} kursi)
         </p>
+      )}
+
+      {status === 'sukses' && (
+        <div className="mt-4 rounded-xl border border-green-200 bg-green-50 p-4 text-center text-sm text-green-700">
+          ✓ Pemesanan berhasil dikirim! Tim admin kami akan segera menghubungi
+          Anda via WhatsApp untuk konfirmasi kuota.
+        </div>
+      )}
+      {status === 'gagal' && (
+        <div className="mt-4 rounded-xl border border-red-200 bg-red-50 p-4 text-center text-sm text-red-600">
+          Pemesanan gagal tersimpan. Silakan coba lagi, atau hubungi kami
+          langsung via WhatsApp.
+        </div>
       )}
 
       <div className="mt-3 grid grid-cols-2 gap-3">
@@ -247,7 +353,8 @@ function PesanPaketForm({ paket, initialTanggal }: PesanPaketFormProps) {
       </div>
 
       <p className="mt-3 text-center text-xs text-gray-400">
-        KERANGKA — pengiriman booking ke admin via WhatsApp menyusul fase 2
+        Dengan mengirim, data Anda tersimpan di sistem & admin mendapat
+        notifikasi otomatis. Anda tidak perlu mengirim ulang via WhatsApp.
       </p>
     </form>
   )

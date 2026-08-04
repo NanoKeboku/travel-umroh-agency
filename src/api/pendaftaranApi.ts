@@ -1,6 +1,11 @@
 /**
  * API client — submit pendaftaran ke backend.
  * POST /api/pendaftaran → simpan ke D1 + notifikasi WA admin (Fonnte).
+ *
+ * Mendukung dua bentuk:
+ * 1. Form Pendaftaran (/pendaftaran) — field dasar.
+ * 2. Form Tiket (PesanPaketForm) — field dasar + detail pilihan
+ *    (kamarType, bandara, programHari, tambahanDomestik, totalHarga, detailJson).
  */
 export interface PendaftaranPayload {
   paketId: string
@@ -8,9 +13,19 @@ export interface PendaftaranPayload {
   tanggal: string
   nama: string
   whatsapp: string
-  alamat?: string
+  alamat: string
   jumlahPax: number
   perkiraanHarga?: number
+  // === Field detail form tiket (opsional) ===
+  /** Rangkuman kamar, contoh: "hargaQuad=1;hargaTriple=2" */
+  kamarType?: string
+  bandara?: string
+  programHari?: string
+  tambahanDomestik?: string
+  tambahanHarga?: number
+  totalHarga?: number
+  /** Rincian lengkap semua pilihan form (audit trail) */
+  detailJson?: string
 }
 
 export interface PendaftaranResult {

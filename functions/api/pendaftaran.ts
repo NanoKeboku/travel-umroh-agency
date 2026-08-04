@@ -16,6 +16,15 @@
  *     "perkiraanHarga": 30500000
  *   }
  *
+ * Form tiket (PesanPaketForm) menambah field detail pilihan:
+ *   "kamarType": "hargaQuad=1;hargaTriple=2",   // rangkuman kamar (key model)
+ *   "bandara": "Soekarno-Hatta (CGK)",
+ *   "programHari": "9 Hari",
+ *   "tambahanDomestik": "Lion Air — Solo (SOC) PP",
+ *   "tambahanHarga": 1500000,
+ *   "totalHarga": 33500000,
+ *   "detailJson": "{ ...rincian lengkap pilihan form... }"
+ *
  * Notifikasi WhatsApp via Fonnte dikirim ke nomor admin
  * (env FONTTE_ADMIN_WHATSAPP). Jika FONTTE_API_TOKEN tidak diset,
  * pendaftaran tetap tersimpan (notifikasi dilewati).
@@ -32,6 +41,30 @@ const json = (data: unknown, status = 200) =>
     headers: { 'Content-Type': 'application/json; charset=utf-8' },
   })
 
+/** Map key kamar (data model) → label ramah untuk notifikasi WA */
+const KAMAR_LABEL: Record<string, string> = {
+  hargaQuad: 'Quad',
+  hargaTriple: 'Triple',
+  hargaDouble: 'Double',
+}
+
+/** 'hargaQuad=1;hargaTriple=2' → 'Quad ×1, Triple ×2' (untuk pesan WA saja) */
+function formatKamarUntukWA(kamarType?: string): string {
+  if (!kamarType) return ''
+  return kamarType
+    .split(';')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .map((part) => {
+      const [key, count] = part.split('=')
+      const label = KAMAR_LABEL[key?.trim() ?? ''] ?? key?.trim()
+      return count ? `${label} ×${count.trim()}` : label
+    })
+    .join(', ')
+}
+
+const formatRp = (n: number) => `Rp${n.toLocaleString('id-ID')}`
+
 /** Kirim notifikasi WhatsApp via Fonnte API */
 async function kirimNotifikasiFonnte(
   env: Env,
@@ -41,6 +74,10 @@ async function kirimNotifikasiFonnte(
     paketNama: string
     tanggal: string
     jumlahPax: number
+    kamarType?: string
+    bandara?: string
+    tambahanDomestik?: string
+    totalHarga?: number
   },
 ): Promise<{ ok: boolean; detail?: string }> {
   const token = env.FONTTE_API_TOKEN
@@ -49,7 +86,7 @@ async function kirimNotifikasiFonnte(
     return { ok: false, detail: 'Fonnte belum dikonfigurasi (FONTTE_API_TOKEN / FONTTE_ADMIN_WHATSAPP)' }
   }
 
-  const pesan = [
+  const baris = [
     '🕌 *PENDAFTARAN BARU — Ebitour*',
     '',
     `Nama: ${data.nama}`,
@@ -57,9 +94,21 @@ async function kirimNotifikasiFonnte(
     `Paket: ${data.paketNama}`,
     `Tanggal: ${data.tanggal}`,
     `Jumlah: ${data.jumlahPax} pax`,
-    '',
-    'Segera konfirmasi kuota ke calon jamaah.',
-  ].join('\n')
+  ]
+
+  const kamarLabel = formatKamarUntukWA(data.kamarType)
+  if (kamarLabel) baris.push(`Kamar: ${kamarLabel}`)
+  if (data.bandara) baris.push(`Bandara: ${data.bandara}`)
+  if (data.tambahanDomestik && data.tambahanDomestik !== 'Tanpa Tiket Domestik') {
+    baris.push(`Tambahan: ${data.tambahanDomestik}`)
+  }
+  if (data.totalHarga != null && data.totalHarga > 0) {
+    baris.push(`Total: ${formatRp(data.totalHarga)}`)
+  }
+
+  baris.push('', 'Segera konfirmasi kuota ke calon jamaah.')
+
+  const pesan = baris.join('\n')
 
   // Normalisasi nomor tujuan: '08xxx' → '628xxx'.
   // Hanya kirim countryCode jika target masih format lokal '0...'
@@ -112,8 +161,20 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
   const jumlahPax = Number(body.jumlahPax ?? 1)
   const perkiraanHarga = body.perkiraanHarga != null ? Number(body.perkiraanHarga) : null
 
-  if (!paketId || !paketNama || !tanggal || !nama || !whatsapp) {
-    return json({ error: 'Field wajib: paketId, paketNama, tanggal, nama, whatsapp' }, 400)
+  // Field detail form tiket (opsional — form Pendaftaran lama tidak mengirim ini)
+  const kamarType = String(body.kamarType ?? '').trim()
+  const bandara = String(body.bandara ?? '').trim()
+  const programHari = String(body.programHari ?? '').trim()
+  const tambahanDomestik = String(body.tambahanDomestik ?? '').trim()
+  const tambahanHarga = body.tambahanHarga != null ? Number(body.tambahanHarga) : null
+  const totalHarga = body.totalHarga != null ? Number(body.totalHarga) : null
+  const detailJson = String(body.detailJson ?? '').trim() || null
+
+  if (!paketId || !paketNama || !tanggal || !nama || !whatsapp || !alamat) {
+    return json(
+      { error: 'Field wajib: paketId, paketNama, tanggal, nama, whatsapp, alamat' },
+      400,
+    )
   }
   if (!/^[0-9+\-\s]{8,15}$/.test(whatsapp)) {
     return json({ error: 'Nomor WhatsApp tidak valid' }, 400)
@@ -125,10 +186,30 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
   // ---- Simpan ke D1 ----
   const result = await env.ebitour_db
     .prepare(
-      `INSERT INTO pendaftaran (paket_id, paket_nama, tanggal, nama, whatsapp, alamat, jumlah_pax, perkiraan_harga)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO pendaftaran
+         (paket_id, paket_nama, tanggal, nama, whatsapp, alamat,
+          jumlah_pax, perkiraan_harga,
+          kamar_type, bandara, program_hari, tambahan_domestik,
+          tambahan_harga, total_harga, detail_json)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
-    .bind(paketId, paketNama, tanggal, nama, whatsapp, alamat || null, jumlahPax, perkiraanHarga)
+    .bind(
+      paketId,
+      paketNama,
+      tanggal,
+      nama,
+      whatsapp,
+      alamat,
+      jumlahPax,
+      perkiraanHarga,
+      kamarType || null,
+      bandara || null,
+      programHari || null,
+      tambahanDomestik || null,
+      tambahanHarga,
+      totalHarga,
+      detailJson,
+    )
     .run()
 
   // ---- Notifikasi Fonnte (opsional — tidak menggagalkan simpan) ----
@@ -138,6 +219,10 @@ export const onRequestPost: PagesFunction<Env> = async ({ env, request }) => {
     paketNama,
     tanggal,
     jumlahPax,
+    kamarType: kamarType || undefined,
+    bandara: bandara || undefined,
+    tambahanDomestik: tambahanDomestik || undefined,
+    totalHarga: totalHarga ?? undefined,
   })
 
   return json(

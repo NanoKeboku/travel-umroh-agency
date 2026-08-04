@@ -194,6 +194,7 @@ function Pendaftaran() {
                   onChange={(e) => setAlamat(e.target.value)}
                   placeholder="Alamat lengkap (kota/kabupaten)"
                   rows={2}
+                  required
                   className={INPUT_CLS}
                 />
               </label>
