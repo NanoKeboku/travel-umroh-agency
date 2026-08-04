@@ -5,7 +5,7 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import Footer from './Footer'
-import FloatingWhatsApp from './FloatingWhatsApp'
+import ChatWidget from '../chat/ChatWidget'
 import useScrollToTop from '../../hooks/useScrollToTop'
 
 function Layout() {
@@ -18,7 +18,7 @@ function Layout() {
         <Outlet />
       </main>
       <Footer />
-      <FloatingWhatsApp />
+      <ChatWidget />
     </div>
   )
 }

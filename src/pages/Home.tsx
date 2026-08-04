@@ -14,6 +14,7 @@ import GaleriPreview from '../components/home/GaleriPreview'
 import Asatidzah from '../components/home/Asatidzah'
 import TestimoniSlider from '../components/home/TestimoniSlider'
 import CtaBanner from '../components/home/CtaBanner'
+import FaqHome from '../components/home/FaqHome'
 
 function Home() {
   return (
@@ -26,6 +27,7 @@ function Home() {
       <Asatidzah />
       <TestimoniSlider />
       <CtaBanner />
+      <FaqHome />
     </>
   )
 }
